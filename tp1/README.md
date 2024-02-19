@@ -1,12 +1,20 @@
 # CG 2023/2024
 
-## Group T0xG0y
+## Group T04G07
 
 ## TP 1 Notes
 
-(add your main observations/remarks about your experiments here, in a bulleted list, and remove this line. Some examples below)
+- No exercício 1, observamos algumas dificuldade em tentar dar display ao Triângulo e ao Paralelogramo, mas eventualmente as nossas dúvidas foram esclarecidas. Para tornar o paralelogramo vísivel em 2 lados, adicionamos os mesmos indices que tínhamos, mas na sua forma inversa
 
-- In exercise 1 we observed X
-- In exercise 2 we had difficulties in Y
+```javascript
+//Counter-clockwise reference of vertices
+        this.indices = [
+            0, 1, 2,
+            2, 3, 0,
+            2, 1, 0,
+            0, 3, 2
+        ];
+```
+- No exercício 2, na qual era pedido criar um triângulo grande e pequeno, bastou criar 2 ficheiros diferentes, correspondente a cada um e com a sua checkbox respetiva.
 
-![Screenshot 1](screenshots/cg-t0xgxx-tp1-n.png)
+![Screenshot 1](screenshots/CG-t4g7-tp-1.png)
