@@ -3,8 +3,8 @@
 ## Group T0xG0y
 | Name             | Number    | E-Mail             |
 | ---------------- | --------- | ------------------ |
-| John Doe         | 201901010 | ...                |
-| Jane Doe         | 201901011 | ...                |
+| Diogo Sarmento        | 202108890 | up202108890@up.pt  |
+| Rodrigo Póvoa         | 202109663 | up202109663@up.pt  |
 
 ----
 
