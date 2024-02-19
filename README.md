@@ -1,6 +1,6 @@
 # CG 2023/2024
 
-## Group T0xG0y
+## Group T04G07
 | Name             | Number    | E-Mail             |
 | ---------------- | --------- | ------------------ |
 | Diogo Sarmento        | 202108890 | up202108890@up.pt  |
