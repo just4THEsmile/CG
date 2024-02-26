@@ -5,7 +5,7 @@ import {CGFinterface, dat} from '../lib/CGF.js';
 * @constructor
 */
 export class MyInterface extends CGFinterface {
-        constructor() {
+    constructor() {
         super();
     }
 
@@ -23,23 +23,12 @@ export class MyInterface extends CGFinterface {
         //Slider element in GUI
         this.gui.add(this.scene, 'scaleFactor', 0.1, 5).name('Scale Factor');
 
-        //Diamond Checkbox
-        this.gui.add(this.scene, 'displayDiamond').name('MyDiamond');
-
-        //Triangle checkbox
-        this.gui.add(this.scene, 'displayTriangle').name('MyTriangle');   
-
-        //Parallelogram checkbox
-        this.gui.add(this.scene, 'displayParallelogram').name('MyParallelogram');
-
-        //TriangleBig checkbox
-        this.gui.add(this.scene, 'displayTriangleBig').name('MyTriangleBig');
-
-        //TriangleSmall checkbox
-        this.gui.add(this.scene, 'displayTriangleSmall').name('MyTriangleSmall');
+        this.gui.add(this.scene, 'displayTangram').name('Display Tangram');
         
-        //Tangram checkbox
-        this.gui.add(this.scene, 'displayTangram').name('MyTangram');
+        this.gui.add(this.scene, 'displayUnitCube').name('Display Unit Cube');
+
+        this.gui.add(this.scene, 'displayUnitCubeQuad').name('Display Quad Cube');
+        
         return true;
     }
 }
