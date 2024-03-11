@@ -26,11 +26,20 @@ export class MyScene extends CGFscene {
         this.gl.depthFunc(this.gl.LEQUAL);
         this.enableTextures(true);
 
+        //------ Textures
+        this.texture1 = new CGFtexture(this, 'images/board.jpg');
+        this.texture2 = new CGFtexture(this, 'images/floor.png');
+        this.texture3 = new CGFtexture(this, 'images/window.jpg');
+        this.texture4 = new CGFtexture(this, 'images/mineBottom.png');
+        this.texture5 = new CGFtexture(this, 'images/mineSide.png');
+        this.texture6 = new CGFtexture(this, 'images/mineTop.png');
+        //-------
+
         //Initialize scene objects
         this.axis = new CGFaxis(this);
         this.quad = new MyQuad(this);
         this.tangram = new MyTangram(this);
-        this.unitcube = new MyUnitCubeQuad(this);
+        this.unitcube = new MyUnitCubeQuad(this,this.texture6,this.texture5,this.texture5,this.texture5,this.texture5,this.texture4);
 
         //------ Applied Material
         this.quadMaterial = new CGFappearance(this);
@@ -42,20 +51,13 @@ export class MyScene extends CGFscene {
         this.quadMaterial.setTextureWrap('REPEAT', 'REPEAT');
         //------
 
-        //------ Textures
-        this.texture1 = new CGFtexture(this, 'images/board.jpg');
-        this.texture2 = new CGFtexture(this, 'images/floor.png');
-        this.texture3 = new CGFtexture(this, 'images/window.jpg');
-        this.texture4 = new CGFtexture(this, 'images/mineBottom.png');
-        this.texture5 = new CGFtexture(this, 'images/mineSide.png');
-        this.texture6 = new CGFtexture(this, 'images/mineTop.png');
-        //-------
+
 
         //-------Objects connected to MyInterface
         this.displayAxis = true;
-        this.displayTangram = true;
+        this.displayTangram = false;
         this.displayQuad = false;
-        this.displayUnitCube = false;
+        this.displayUnitCube = true;
         this.scaleFactor = 5;
         this.selectedTexture = -1;        
         this.wrapS = 0;
