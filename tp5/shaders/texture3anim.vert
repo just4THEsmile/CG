@@ -1,4 +1,3 @@
-
 attribute vec3 aVertexPosition;
 attribute vec3 aVertexNormal;
 attribute vec2 aTextureCoord;
@@ -21,6 +20,10 @@ void main() {
 	if (texture2D(uSampler2, vec2(0.0,0.1)+vTextureCoord).b > 0.5)
 		offset=aVertexNormal*normScale*0.1*sin(timeFactor);
 
-	gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition+offset, 1.0);
+	vec3 offset_two=vec3(sin(timeFactor),0.0,0.0);
+
+	offset_two *= vec3(normScale, normScale, normScale);
+
+	gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition+offset+offset_two, 1.0);
 }
 

@@ -25,9 +25,9 @@ export class ShaderScene extends CGFscene {
 		this.appearance = null;
 
 		// initial configuration of interface
-		this.selectedObject = 0;
+		this.selectedObject = 1;
 		this.wireframe = false;
-		this.selectedExampleShader = 0;
+		this.selectedExampleShader = 11;
 		this.showShaderCode = false;
 
 		this.scaleFactor = 16.0;
@@ -76,6 +76,8 @@ export class ShaderScene extends CGFscene {
 		this.appearance.setTextureWrap('REPEAT', 'REPEAT');
 
 		this.texture2 = new CGFtexture(this, "textures/FEUP.jpg");
+		this.texturewater = new CGFtexture(this, "textures/waterTex.jpg");
+		this.texturewater2 = new CGFtexture(this, "textures/waterMap.jpg");
 
 		// shaders initialization
 
@@ -88,7 +90,10 @@ export class ShaderScene extends CGFscene {
 			new CGFshader(this.gl, "shaders/texture3.vert", "shaders/texture3.frag"),
 			new CGFshader(this.gl, "shaders/texture3anim.vert", "shaders/texture3anim.frag"),
 			new CGFshader(this.gl, "shaders/texture1.vert", "shaders/sepia.frag"),
-			new CGFshader(this.gl, "shaders/texture1.vert", "shaders/convolution.frag")
+			new CGFshader(this.gl, "shaders/texture1.vert", "shaders/convolution.frag"),
+			new CGFshader(this.gl, "shaders/blueyellow.vert", "shaders/blueyellow.frag"),
+			new CGFshader(this.gl, "shaders/texture1.vert", "shaders/gray.frag"),
+			new CGFshader(this.gl, "shaders/water.vert", "shaders/water.frag")
 		];
 
 		// additional texture will have to be bound to texture unit 1 later, when using the shader, with "this.texture2.bind(1);"
@@ -96,6 +101,9 @@ export class ShaderScene extends CGFscene {
 		this.testShaders[5].setUniformsValues({ uSampler2: 1 });
 		this.testShaders[6].setUniformsValues({ uSampler2: 1 });
 		this.testShaders[6].setUniformsValues({ timeFactor: 0 });
+		this.testShaders[11].setUniformsValues({ uSampler3: 2 });
+		this.testShaders[11].setUniformsValues({ uSampler4: 3 });
+		this.testShaders[11].setUniformsValues({ timeFactor: 0 });
 
 
 		// Shaders interface variables
@@ -109,7 +117,10 @@ export class ShaderScene extends CGFscene {
 			'Multiple textures in VS and FS': 5,
 			'Animation example': 6,
 			'Sepia': 7,
-			'Convolution': 8
+			'Convolution': 8,
+			'Blue-Yellow': 9,
+			'Gray': 10,
+			'Water' : 11
 		};
 
 		// shader code panels references
@@ -122,6 +133,11 @@ export class ShaderScene extends CGFscene {
 		this.onShaderCodeVizChanged(this.showShaderCode);
 		this.onSelectedShaderChanged(this.selectedExampleShader);
 
+		
+		if (this.selectedExampleShader == 11)
+			this.appearance.setTexture(this.texturewater);
+		else
+			this.appearance.setTexture(this.texture);
 
 		// set the scene update period 
 		// (to invoke the update() method every 50ms or as close as possible to that )
@@ -165,6 +181,7 @@ export class ShaderScene extends CGFscene {
 
 		// update scale factor
 		this.onScaleFactorChanged(this.scaleFactor);
+
 	}
 
 	// called when a new object is selected
@@ -226,7 +243,10 @@ export class ShaderScene extends CGFscene {
 
 		// bind additional texture to texture unit 1
 		this.texture2.bind(1);
+		this.texturewater.bind(2);
+		this.texturewater2.bind(3);
 
+		
 		if (this.selectedObject==0) {
 			// teapot (scaled and rotated to conform to our axis)
 
