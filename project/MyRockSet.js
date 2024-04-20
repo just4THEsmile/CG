@@ -17,13 +17,7 @@ export class MyRockSet extends CGFobject {
             let y = 0;
             let z = Math.random() * 20 - 10;
 
-            let scaleX = Math.random() * 0.5 + 0.5;
-            let scaleY = Math.random() * 0.5 + 0.5;
-            let scaleZ = Math.random() * 0.5 + 0.5;
-
             rock.position = [x,y,z];
-            rock.scale = [scaleX,scaleY,scaleZ];
-
             this.rocks.push(rock);
         }
 

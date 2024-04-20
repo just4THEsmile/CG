@@ -10,6 +10,12 @@ export class MyRock extends CGFobject {
         this.stacks = stacks;
         this.inverse = inverse;
 
+        let scaleX = Math.random() * 0.5 + 0.5;
+        let scaleY = Math.random() * 0.5 + 0.5;
+        let scaleZ = Math.random() * 0.5 + 0.5;
+
+        this.scale = [scaleX, scaleY, scaleZ];
+
         this.material = new CGFappearance(scene);
         this.material.setAmbient(0.5, 0.5, 0.5, 1.0); 
         this.material.setDiffuse(0.5, 0.5, 0.5, 1.0); 
@@ -101,7 +107,10 @@ export class MyRock extends CGFobject {
     }
 
     display(){
+        this.scene.pushMatrix();
+        this.scene.scale(this.scale[0],this.scale[1],this.scale[2]);
         this.material.apply();
         super.display();
+        this.scene.popMatrix();
     }
 }

@@ -4,6 +4,7 @@ import { MySphere } from "./MySphere.js";
 import { MyPanorama } from "./MyPanorama.js";
 import { MyRock } from "./MyRock.js";
 import { MyRockSet } from "./MyRockSet.js";
+import { MyRockPyramid } from "./MyRockPyramid.js";
 
 /**
  * MyScene
@@ -34,6 +35,7 @@ export class MyScene extends CGFscene {
     this.panorama = new MyPanorama(this, new CGFtexture(this, "images/city_panorama.jpg"));
     this.rock = new MyRock(this, 32, 32, false);
     this.rockset = new MyRockSet(this, 5, 32, 32);
+    this.rockpyramid = new MyRockPyramid(this, 3, 32, 32);
 
     //Objects connected to MyInterface
     this.displayAxis = false;
@@ -42,7 +44,8 @@ export class MyScene extends CGFscene {
     this.displayPlane = false;
     this.displayPanorama = false;
     this.displayRock = false;
-    this.displayRockSet = true;
+    this.displayRockSet = false;
+    this.displayRockPyramid = true;
     this.scaleFactor = 1;
 
     //Textures
@@ -157,6 +160,14 @@ export class MyScene extends CGFscene {
         child.disableNormalViz();
       }
     }
-    // ---- END Primitive drawing section
+
+    if(this.displayRockPyramid){
+        this.rockpyramid.display();
+        if(this.displayNormals){
+          for(let child of this.rockpyramid.rocks){
+            child.enableNormalViz();
+          }
+        }
+      }  
   }
 }
