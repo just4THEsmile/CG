@@ -52,15 +52,22 @@ export class MyScene extends CGFscene {
     this.enableTextures(true);
     this.texture_terrain = new CGFtexture(this, "images/terrain.jpg");
     this.texture_earth = new CGFtexture(this, "images/earth.jpg");
+    this.texture_rock = new CGFtexture(this, "images/rock_texture.jpg");
+    
 
     //Appearances
     this.appearance_earth = new CGFappearance(this);
     this.appearance_earth.setTexture(this.texture_earth);
     this.appearance_earth.setTextureWrap('REPEAT', 'REPEAT');
+  
 
     this.appearance_terrain = new CGFappearance(this);
     this.appearance_terrain.setTexture(this.texture_terrain);
     this.appearance_terrain.setTextureWrap('REPEAT', 'REPEAT');
+
+    this.appearance_rock = new CGFappearance(this);
+    this.appearance_rock.setTexture(this.texture_rock);
+    this.appearance_rock.setTextureWrap('REPEAT', 'REPEAT');
 
   }
   initLights() {
@@ -157,6 +164,9 @@ export class MyScene extends CGFscene {
       this.plane.disableNormalViz();
       this.rock.disableNormalViz();
       for(let child of this.rockset.rocks){
+        child.disableNormalViz();
+      }
+      for(let child of this.rockpyramid.rocks){
         child.disableNormalViz();
       }
     }
