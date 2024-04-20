@@ -2,6 +2,8 @@ import { CGFscene, CGFcamera, CGFaxis, CGFappearance, CGFshader, CGFtexture } fr
 import { MyPlane } from "./MyPlane.js";
 import { MySphere } from "./MySphere.js";
 import { MyPanorama } from "./MyPanorama.js";
+import { MyRock } from "./MyRock.js";
+import { MyRockSet } from "./MyRockSet.js";
 
 /**
  * MyScene
@@ -30,12 +32,17 @@ export class MyScene extends CGFscene {
     this.plane = new MyPlane(this,30);
     this.sphere = new MySphere(this, 32, 32, false);
     this.panorama = new MyPanorama(this, new CGFtexture(this, "images/city_panorama.jpg"));
+    this.rock = new MyRock(this, 32, 32, false);
+    this.rockset = new MyRockSet(this, 5, 32, 32);
 
     //Objects connected to MyInterface
     this.displayAxis = false;
+    this.displayNormals = false;
     this.displaySphere = false;
     this.displayPlane = false;
-    this.displayPanorama = true;
+    this.displayPanorama = false;
+    this.displayRock = false;
+    this.displayRockSet = true;
     this.scaleFactor = 1;
 
     //Textures
@@ -44,9 +51,13 @@ export class MyScene extends CGFscene {
     this.texture_earth = new CGFtexture(this, "images/earth.jpg");
 
     //Appearances
-    this.appearance = new CGFappearance(this);
-    this.appearance.setTexture(this.texture_earth);
-    this.appearance.setTextureWrap('REPEAT', 'REPEAT');
+    this.appearance_earth = new CGFappearance(this);
+    this.appearance_earth.setTexture(this.texture_earth);
+    this.appearance_earth.setTextureWrap('REPEAT', 'REPEAT');
+
+    this.appearance_terrain = new CGFappearance(this);
+    this.appearance_terrain.setTexture(this.texture_terrain);
+    this.appearance_terrain.setTextureWrap('REPEAT', 'REPEAT');
 
   }
   initLights() {
@@ -90,9 +101,11 @@ export class MyScene extends CGFscene {
     if (this.displaySphere) { 
 
       this.pushMatrix();
-      this.appearance.apply();
+      this.appearance_earth.apply();
       this.sphere.display();
       this.popMatrix();
+
+      if(this.displayNormals) this.sphere.enableNormalViz();
 
     }
 
@@ -107,13 +120,42 @@ export class MyScene extends CGFscene {
     if (this.displayPlane) {
 
       this.pushMatrix();
-      this.appearance.apply();
+      this.appearance_terrain.apply();
       this.translate(0,-100,0);
       this.scale(400,400,400);
       this.rotate(-Math.PI/2.0,1,0,0);
       this.plane.display();
       this.popMatrix();
 
+      if(this.displayNormals) this.plane.enableNormalViz();
+
+    }
+
+    if(this.displayRock){
+
+      this.rock.display();
+      if(this.displayNormals) this.rock.enableNormalViz();
+
+    }
+
+
+    if(this.displayRockSet){
+
+      this.rockset.display();
+      if(this.displayNormals){
+        for(let child of this.rockset.rocks){
+          child.enableNormalViz();
+        }
+      }
+    }
+
+    if(!this.displayNormals){
+      this.sphere.disableNormalViz();
+      this.plane.disableNormalViz();
+      this.rock.disableNormalViz();
+      for(let child of this.rockset.rocks){
+        child.disableNormalViz();
+      }
     }
     // ---- END Primitive drawing section
   }

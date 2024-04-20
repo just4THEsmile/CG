@@ -42,7 +42,7 @@ export class MySphere extends CGFobject {
                 let new_u = 1 - u;
 
                 this.vertices.push(x, y, z);
-                this.normals.push(this.invert ? -x : x, this.invert ? -y : y, this.invert ? -z : z);
+                this.normals.push(this.inverse ? -x : x, this.inverse ? -y : y, this.inverse ? -z : z);
                 this.texCoords.push(new_u, v);
 
             } 
