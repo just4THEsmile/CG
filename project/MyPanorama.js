@@ -1,5 +1,5 @@
 import {CGFobject, CGFappearance} from '../lib/CGF.js';
-import {MySphere} from './MySphere.js';
+import {MySphere} from './Geometric/MySphere.js';
 
 export class MyPanorama extends CGFobject {
 

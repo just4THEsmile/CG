@@ -1,10 +1,11 @@
 import { CGFscene, CGFcamera, CGFaxis, CGFappearance, CGFshader, CGFtexture } from "../lib/CGF.js";
 import { MyPlane } from "./MyPlane.js";
-import { MySphere } from "./MySphere.js";
+import { MySphere } from "./Geometric/MySphere.js";
 import { MyPanorama } from "./MyPanorama.js";
 import { MyRock } from "./MyRock.js";
 import { MyRockSet } from "./MyRockSet.js";
 import { MyRockPyramid } from "./MyRockPyramid.js";
+import { MyBee } from "./MyBee.js";
 
 /**
  * MyScene
@@ -19,6 +20,9 @@ export class MyScene extends CGFscene {
     
     this.initCameras();
     this.initLights();
+
+    //Enable Update
+    this.setUpdatePeriod(1000/60);
 
     //Background color
     this.gl.clearColor(0.0, 0.0, 0.0, 1.0);
@@ -36,16 +40,18 @@ export class MyScene extends CGFscene {
     this.rock = new MyRock(this, 32, 32, false);
     this.rockset = new MyRockSet(this, 5, 32, 32);
     this.rockpyramid = new MyRockPyramid(this, 15, 32, 32);
+    this.bee = new MyBee(this, 0, 0, 0);
 
     //Objects connected to MyInterface
-    this.displayAxis = false;
+    this.displayAxis = true;
     this.displayNormals = false;
     this.displaySphere = false;
     this.displayPlane = false;
-    this.displayPanorama = false;
+    this.displayPanorama = true;
     this.displayRock = false;
     this.displayRockSet = false;
-    this.displayRockPyramid = true;
+    this.displayRockPyramid = false;
+    this.displayBee = true;
     this.scaleFactor = 1;
 
     //Textures
@@ -53,6 +59,7 @@ export class MyScene extends CGFscene {
     this.texture_terrain = new CGFtexture(this, "images/terrain.jpg");
     this.texture_earth = new CGFtexture(this, "images/earth.jpg");
     this.texture_rock = new CGFtexture(this, "images/rock_texture.jpg");
+    this.texture_bee = new CGFtexture(this, "images/bee_texture.jpg");
     
 
     //Appearances
@@ -68,6 +75,11 @@ export class MyScene extends CGFscene {
     this.appearance_rock = new CGFappearance(this);
     this.appearance_rock.setTexture(this.texture_rock);
     this.appearance_rock.setTextureWrap('REPEAT', 'REPEAT');
+
+    this.appearance_bee = new CGFappearance(this);
+    this.appearance_bee.setTexture(this.texture_bee);
+    this.appearance_bee.setTextureWrap('CLAMP_TO_EDGE', 'CLAMP_TO_EDGE');
+
 
   }
   initLights() {
@@ -179,5 +191,14 @@ export class MyScene extends CGFscene {
           }
         }
       }  
+  
+    if(this.displayBee){
+      this.bee.display();
+    }
+
+  }
+  update(t){
+
+    this.bee.update(t);
   }
 }
