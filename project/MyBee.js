@@ -16,6 +16,10 @@ export class MyBee extends CGFobject {
         this.y = y;
         this.z = z;
 
+        this.orientation = 0;
+
+        this.velocity = [0,0,0];
+
         this.head = new MyHead(scene);
         this.leftEye = new MyEye(scene);
         this.rightEye = new MyEye(scene);
@@ -38,6 +42,8 @@ export class MyBee extends CGFobject {
         
         let deltaTime = t - this.time;
         this.time = t;
+
+        
 
         this.y = 3 + Math.sin(2*Math.PI * t / 1000);
 

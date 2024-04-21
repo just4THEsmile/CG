@@ -39,7 +39,7 @@ export class MyScene extends CGFscene {
     this.panorama = new MyPanorama(this, new CGFtexture(this, "images/city_panorama.jpg"));
     this.rock = new MyRock(this, 32, 32, false);
     this.rockset = new MyRockSet(this, 5, 32, 32);
-    this.rockpyramid = new MyRockPyramid(this, 15, 32, 32);
+    this.rockpyramid = new MyRockPyramid(this, 5, 32, 32);
     this.bee = new MyBee(this, 0, 0, 0);
 
     //Objects connected to MyInterface
@@ -200,5 +200,23 @@ export class MyScene extends CGFscene {
   update(t){
 
     this.bee.update(t);
+  }
+  checkKeys(){
+    var text="Keys pressed: ";
+    var keysPressed=false;
+
+    if(this.gui.isKeyPressed("KeyW")){
+      text+=" W ";
+      keys
+    }
+
+    if(this.gui.isKeyPressed("KeyS")){
+      text+=" S ";
+      keysPressed=true;
+    }
+
+    if(keysPressed){
+      console.log(text);
+    }
   }
 }
