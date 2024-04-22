@@ -31,6 +31,9 @@ export class MyScene extends CGFscene {
     this.gl.enable(this.gl.DEPTH_TEST);
     this.gl.enable(this.gl.CULL_FACE);
     this.gl.depthFunc(this.gl.LEQUAL);
+    this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
+    this.gl.enable(this.gl.BLEND);
+
 
     //Initialize scene objects
     this.axis = new CGFaxis(this);
@@ -79,6 +82,8 @@ export class MyScene extends CGFscene {
     this.appearance_bee = new CGFappearance(this);
     this.appearance_bee.setTexture(this.texture_bee);
     this.appearance_bee.setTextureWrap('CLAMP_TO_EDGE', 'CLAMP_TO_EDGE');
+
+
 
 
   }

@@ -40,14 +40,43 @@ export class MyBee extends CGFobject {
 
     update(t){
         
-        let deltaTime = t - this.time;
-        this.time = t;
+        let deltaTime = t;
 
+        this.x += this.velocity[0] * deltaTime;
+        this.y += this.velocity[1] * deltaTime;
+        this.z += this.velocity[2] * deltaTime;
         
-
+        //Animation Bee Oscilation
         this.y = 3 + Math.sin(2*Math.PI * t / 1000);
 
+        //Animation Bee Wing
         this.wingAngle = Math.sin(2*Math.PI * t / 500) * 20; 
+    }
+
+    turn(v){
+
+        //Update Orientation
+        this.orientation += v;
+
+        //Update Velocity 
+        let speed = Math.sqrt(this.velocity[0]**2 + this.velocity[1]**2 + this.velocity[2]**2);
+        this.velocity[0] = speed * Math.cos(this.orientation);
+        this.velocity[2] = speed * Math.sin(this.orientation);
+
+    }
+
+    accelerate(v){
+
+        //Calculate current speed
+        let speed = Math.sqrt(this.velocity[0]**2 + this.velocity[1]**2 + this.velocity[2]**2);
+
+        //Update Velocity
+        speed +=v;
+
+        //Update Velocity while maintaining direction
+        let direction = Math.atan2(this.velocity[2], this.velocity[0]);
+        this.velocity[0] = speed * Math.cos(direction);
+        this.velocity[2] = speed * Math.sin(direction);
     }
 
     display(){
@@ -55,6 +84,7 @@ export class MyBee extends CGFobject {
         //Start Display Bee
         this.scene.pushMatrix();
         this.scene.translate(this.x,this.y,this.z);
+        this.scene.rotate(this.orientation,0,1,0);
         
         //Display Head
         this.scene.pushMatrix();
@@ -131,40 +161,44 @@ export class MyBee extends CGFobject {
         
         //Display Front Left Wing
         this.scene.pushMatrix();
-        this.scene.translate(1.3,0.9,-2);
-        this.scene.rotate(-Math.PI/2,1,0,0);
+        this.scene.translate(0.75,0.3,-1.7);
         this.scene.rotate(this.wingAngle * (Math.PI / 180),0,0,1);
+        this.scene.translate(0.55,0.6,-0.30);
+        this.scene.rotate(-Math.PI/2,1,0,0);
         this.scene.rotate(40 * (Math.PI / 180),0,0,1);
         this.scene.rotate(-40 * (Math.PI / 180),0,1,0);
         this.frontLeftWing.display();
         this.scene.popMatrix();
-
+        
         //Display Front Right Wing
         this.scene.pushMatrix();
-        this.scene.translate(-1.3,0.9,-2);
-        this.scene.rotate(-Math.PI/2,1,0,0);
+        this.scene.translate(-0.75,0.3,-1.7);
         this.scene.rotate(-this.wingAngle * (Math.PI / 180),0,0,1);
+        this.scene.translate(-0.55,0.6,-0.30);
+        this.scene.rotate(-Math.PI/2,1,0,0);
         this.scene.rotate(-40 * (Math.PI / 180),0,0,1);
         this.scene.rotate(40 * (Math.PI / 180),0,1,0);
         this.frontRightWing.display();
         this.scene.popMatrix();
-
+        
         //Display Back Left Wing
         this.scene.pushMatrix();
-        this.scene.translate(1.4,0.8,-2.2);
-        this.scene.rotate(-Math.PI/2,1,0,0);
+        this.scene.translate(0.85,0.2,-1.9);
         this.scene.rotate(this.wingAngle * (Math.PI / 180),0,0,1);
+        this.scene.translate(0.55,0.6,-0.30);
+        this.scene.rotate(-Math.PI/2,1,0,0);
         this.scene.rotate(40 * (Math.PI / 180),0,0,1);
         this.scene.rotate(-40 * (Math.PI / 180),0,1,0);
         this.scene.scale(1.2,1.5,1.2);
         this.backLeftWing.display();
         this.scene.popMatrix();
-
+        
         //Display Back Right Wing
         this.scene.pushMatrix();
-        this.scene.translate(-1.4,0.8,-2.2);
-        this.scene.rotate(-Math.PI/2,1,0,0);
+        this.scene.translate(-0.85,0.2,-1.9);
         this.scene.rotate(-this.wingAngle * (Math.PI / 180),0,0,1);
+        this.scene.translate(-0.55,0.6,-0.30);
+        this.scene.rotate(-Math.PI/2,1,0,0);
         this.scene.rotate(-40 * (Math.PI / 180),0,0,1);
         this.scene.rotate(40 * (Math.PI / 180),0,1,0);
         this.scene.scale(1.2,1.5,1.2);
@@ -172,8 +206,8 @@ export class MyBee extends CGFobject {
         this.scene.popMatrix();
 
         //End Display Bee
-        this.scene.rotate(Math.PI,0,1,0);
         
+        this.scene.popMatrix();
 
     }
 
