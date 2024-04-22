@@ -20,6 +20,7 @@ export class MyBee extends CGFobject {
 
         this.velocity = [0,0,0];
 
+
         this.head = new MyHead(scene);
         this.leftEye = new MyEye(scene);
         this.rightEye = new MyEye(scene);
@@ -40,6 +41,9 @@ export class MyBee extends CGFobject {
 
     update(t){
 
+        this.speedFactor = this.scene.speedFactor;
+        this.scaleFactor = this.scene.scaleFactor;
+
         if (!this.time) {
             this.time = t;
         }
@@ -52,8 +56,6 @@ export class MyBee extends CGFobject {
         this.y += this.velocity[1] * deltaTime;
         this.z += this.velocity[2] * deltaTime;
 
-
-        
         //Animation Bee Oscilation
         this.y = 3 + Math.sin(2*Math.PI * t / 1000);
 
@@ -62,27 +64,35 @@ export class MyBee extends CGFobject {
     }
 
     turn(v){
+        this.orientation += v * this.speedFactor;
 
-        //Update Orientation
-        this.orientation += v;
+        let speed = this.velocity[0] * Math.sin(this.orientation) + this.velocity[2] * Math.cos(this.orientation);
 
-        //Update Velocity 
-        let speed = Math.sqrt(this.velocity[0]**2 + this.velocity[1]**2 + this.velocity[2]**2);
-        this.velocity[0] = speed * Math.cos(this.orientation);
-        this.velocity[2] = speed * Math.sin(this.orientation);
-
+        this.velocity[0] = speed * Math.sin(this.orientation);
+        this.velocity[2] = speed * Math.cos(this.orientation);
     }
 
     accelerate(v){
 
+        let speed = Math.sqrt(this.velocity[0]**2 + this.velocity[1]**2 + this.velocity[2]**2);
+        speed += v * this.speedFactor;
+
+        if (speed < 0) {
+            speed = 0;
+        }
+
+        this.velocity[0] = speed * Math.sin(this.orientation);
+        this.velocity[2] = speed * Math.cos(this.orientation);
+
     }
 
     reset(){
-        this.x = 1;
-        this.y = 1;
-        this.z = 1;
+        this.x = 0;
+        //this.y = 0;
+        this.z = 0;
         this.orientation = 0;
         this.velocity = [0, 0, 0];
+
 
     }
 
@@ -90,6 +100,7 @@ export class MyBee extends CGFobject {
 
         //Start Display Bee
         this.scene.pushMatrix();
+        this.scene.scale(this.scaleFactor,this.scaleFactor,this.scaleFactor);
         this.scene.translate(this.x,this.y,this.z);
         this.scene.rotate(this.orientation,0,1,0);
         

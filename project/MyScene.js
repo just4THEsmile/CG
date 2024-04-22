@@ -34,6 +34,9 @@ export class MyScene extends CGFscene {
     this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
     this.gl.enable(this.gl.BLEND);
 
+    //Initialize scene parameters
+    this.speedFactor = 1; 
+    this.scaleFactor = 1;
 
     //Initialize scene objects
     this.axis = new CGFaxis(this);
@@ -43,7 +46,7 @@ export class MyScene extends CGFscene {
     this.rock = new MyRock(this, 32, 32, false);
     this.rockset = new MyRockSet(this, 5, 32, 32);
     this.rockpyramid = new MyRockPyramid(this, 5, 32, 32);
-    this.bee = new MyBee(this, 1, 1, 1);
+    this.bee = new MyBee(this, 0, 0, 0);
 
     //Objects connected to MyInterface
     this.displayAxis = true;
@@ -55,7 +58,7 @@ export class MyScene extends CGFscene {
     this.displayRockSet = false;
     this.displayRockPyramid = false;
     this.displayBee = true;
-    this.scaleFactor = 1;
+
 
     //Textures
     this.enableTextures(true);
@@ -215,7 +218,7 @@ export class MyScene extends CGFscene {
 
     if(this.gui.isKeyPressed("KeyW")){
       
-      this.bee.accelerate(0.00001);
+      this.bee.accelerate(0.000001);
       
       text+=" W ";
       keysPressed = true;
@@ -223,7 +226,7 @@ export class MyScene extends CGFscene {
 
     if(this.gui.isKeyPressed("KeyS")){
       
-      this.bee.accelerate(-0.00001);
+      this.bee.accelerate(-0.000001);
       
       text+=" S ";
       keysPressed=true;
