@@ -267,6 +267,10 @@ export class MyScene extends CGFscene {
       keysPressed=true;
     }
 
+    if(this.gui.isKeyPressed("KeyF")){
+      
+    }
+
     if(this.gui.isKeyPressed("KeyD")){
       
       this.bee.turn(-0.1);
