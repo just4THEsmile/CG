@@ -2,6 +2,7 @@ import { CGFscene, CGFcamera, CGFaxis, CGFappearance, CGFshader, CGFtexture } fr
 import { MyPlane } from "./MyPlane.js";
 import { MySphere } from "./MySphere.js";
 import { MyPanorama } from "./MyPanorama.js";
+import { MyFlower } from "./MyFlower.js";
 
 /**
  * MyScene
@@ -30,12 +31,14 @@ export class MyScene extends CGFscene {
     this.plane = new MyPlane(this,30);
     this.sphere = new MySphere(this, 32, 32, false);
     this.panorama = new MyPanorama(this, new CGFtexture(this, "images/city_panorama.jpg"));
+    this.flower= new MyFlower(this, 1, 8, [1, 0, 0], 0.3, [1, 1, 0], 0.07, 5, [0, 1, 0], [1, 1, 0]);
 
     //Objects connected to MyInterface
     this.displayAxis = false;
     this.displaySphere = false;
     this.displayPlane = false;
-    this.displayPanorama = true;
+    this.displayPanorama = false;
+    this.displayFlower = true;
     this.scaleFactor = 1;
 
     //Textures
@@ -114,6 +117,9 @@ export class MyScene extends CGFscene {
       this.plane.display();
       this.popMatrix();
 
+    }
+    if (this.displayFlower) {
+      this.flower.display();
     }
     // ---- END Primitive drawing section
   }
