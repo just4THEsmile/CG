@@ -39,12 +39,20 @@ export class MyBee extends CGFobject {
 
 
     update(t){
+
+        if (!this.time) {
+            this.time = t;
+        }
         
-        let deltaTime = t;
+        let deltaTime = t - this.time;
+
+
 
         this.x += this.velocity[0] * deltaTime;
         this.y += this.velocity[1] * deltaTime;
         this.z += this.velocity[2] * deltaTime;
+
+
         
         //Animation Bee Oscilation
         this.y = 3 + Math.sin(2*Math.PI * t / 1000);
@@ -67,16 +75,15 @@ export class MyBee extends CGFobject {
 
     accelerate(v){
 
-        //Calculate current speed
-        let speed = Math.sqrt(this.velocity[0]**2 + this.velocity[1]**2 + this.velocity[2]**2);
+    }
 
-        //Update Velocity
-        speed +=v;
+    reset(){
+        this.x = 1;
+        this.y = 1;
+        this.z = 1;
+        this.orientation = 0;
+        this.velocity = [0, 0, 0];
 
-        //Update Velocity while maintaining direction
-        let direction = Math.atan2(this.velocity[2], this.velocity[0]);
-        this.velocity[0] = speed * Math.cos(direction);
-        this.velocity[2] = speed * Math.sin(direction);
     }
 
     display(){

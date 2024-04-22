@@ -43,7 +43,7 @@ export class MyScene extends CGFscene {
     this.rock = new MyRock(this, 32, 32, false);
     this.rockset = new MyRockSet(this, 5, 32, 32);
     this.rockpyramid = new MyRockPyramid(this, 5, 32, 32);
-    this.bee = new MyBee(this, 0, 0, 0);
+    this.bee = new MyBee(this, 1, 1, 1);
 
     //Objects connected to MyInterface
     this.displayAxis = true;
@@ -205,23 +205,57 @@ export class MyScene extends CGFscene {
   update(t){
 
     this.bee.update(t);
+    this.checkKeys();
+
+
   }
   checkKeys(){
-    var text="Keys pressed: ";
+    var text="Key pressed: ";
     var keysPressed=false;
 
     if(this.gui.isKeyPressed("KeyW")){
+      
+      this.bee.accelerate(0.00001);
+      
       text+=" W ";
-      keys
+      keysPressed = true;
     }
 
     if(this.gui.isKeyPressed("KeyS")){
+      
+      this.bee.accelerate(-0.00001);
+      
       text+=" S ";
+      keysPressed=true;
+    }
+
+    if(this.gui.isKeyPressed("KeyA")){
+      
+      this.bee.turn(0.1);
+      
+      text+=" A ";
+      keysPressed=true;
+    }
+
+    if(this.gui.isKeyPressed("KeyD")){
+      
+      this.bee.turn(-0.1);
+      
+      text+=" D ";
+      keysPressed=true;
+    }
+
+    if(this.gui.isKeyPressed("KeyR")){
+      
+      this.bee.reset();
+      
+      text+=" R ";
       keysPressed=true;
     }
 
     if(keysPressed){
       console.log(text);
+
     }
   }
 }
