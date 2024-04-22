@@ -6,6 +6,7 @@ import { MyRock } from "./MyRock.js";
 import { MyRockSet } from "./MyRockSet.js";
 import { MyRockPyramid } from "./MyRockPyramid.js";
 import { MyBee } from "./MyBee.js";
+import { MyPollen } from "./MyPollen.js"
 
 /**
  * MyScene
@@ -49,6 +50,7 @@ export class MyScene extends CGFscene {
     this.rockset = new MyRockSet(this, 5, 32, 32);
     this.rockpyramid = new MyRockPyramid(this, 5, 32, 32);
     this.bee = new MyBee(this, 0, 0, 0);
+    this.polen = new MyPollen(this, 32, 32, false);
 
     //Objects connected to MyInterface
     this.displayAxis = true;
@@ -57,9 +59,10 @@ export class MyScene extends CGFscene {
     this.displayPlane = false;
     this.displayPanorama = true;
     this.displayRock = false;
-    this.displayRockSet = true;
-    this.displayRockPyramid = true;
+    this.displayRockSet = false;
+    this.displayRockPyramid = false;
     this.displayBee = false;
+    this.displayPollen = true;
 
 
     //Textures
@@ -71,6 +74,7 @@ export class MyScene extends CGFscene {
     this.texture_bee_antennae = new CGFtexture(this, "images/bee_antennae.jpg");
     this.texture_bee_leg = new CGFtexture(this, "images/bee_leg.jpg");
     this.texture_bee_eye = new CGFtexture(this, "images/bee_eye.png");
+    this.texture_pollen = new CGFtexture(this, "images/pollen.jpg");
     
 
     //Appearances
@@ -102,6 +106,9 @@ export class MyScene extends CGFscene {
     this.appearance_bee_eye.setTexture(this.texture_bee_eye);
     this.appearance_bee_eye.setTextureWrap('REPEAT', 'REPEAT');
 
+    this.appearance_pollen = new CGFappearance(this);
+    this.appearance_pollen.setTexture(this.texture_pollen);
+    this.appearance_pollen.setTextureWrap('REPEAT', 'REPEAT');
 
 
   }
@@ -214,6 +221,11 @@ export class MyScene extends CGFscene {
           }
         }
       }  
+
+    if(this.displayPollen){
+      this.polen.display();
+      if(this.displayNormals) this.polen.enableNormalViz();
+    }
   
     if(this.displayBee){
       this.bee.display();
