@@ -23,6 +23,7 @@ export class MyEye extends CGFobject {
     display(){
         this.scene.pushMatrix();
         this.eyeMaterial.apply();
+        this.scene.appearance_bee_eye.apply();
         this.scene.scale(0.2,0.4,0.2);
         this.eye.display();
         this.scene.popMatrix();

@@ -84,6 +84,7 @@ export class MyBee extends CGFobject {
         this.velocity[0] = speed * Math.sin(this.orientation);
         this.velocity[2] = speed * Math.cos(this.orientation);
 
+        console.log(this.velocity);
     }
 
     reset(){
@@ -155,7 +156,7 @@ export class MyBee extends CGFobject {
         //Display Front Right Leg
         this.scene.pushMatrix();
         this.scene.translate(-0.8,0,-1);
-        this.scene.scale(-1, 1, 1);
+        this.scene.rotate(Math.PI, 0, 1, 0);
         this.scene.rotate(-40 * (Math.PI / 180),0,0,1);
         this.frontRightLeg.display();
         this.scene.popMatrix();
@@ -170,7 +171,7 @@ export class MyBee extends CGFobject {
         //Display Back Right Leg
         this.scene.pushMatrix();
         this.scene.translate(-0.8,0,-3);
-        this.scene.scale(-1, 1, 1);
+        this.scene.rotate(Math.PI, 0, 1, 0);
         this.scene.rotate(-40 * (Math.PI / 180),0,0,1);
         this.backRightLeg.display();
         this.scene.popMatrix();

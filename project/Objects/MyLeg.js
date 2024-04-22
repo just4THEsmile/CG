@@ -28,6 +28,7 @@ export class MyLeg extends CGFobject {
         //Display Top Leg
         this.scene.pushMatrix();
         this.toplegMaterial.apply();
+        this.scene.appearance_bee_leg.apply();
         this.scene.rotate(90 * (Math.PI / 180),0,1,0);
         this.topleg.display();
         this.scene.popMatrix();
@@ -35,6 +36,7 @@ export class MyLeg extends CGFobject {
         //Display Ankle
         this.scene.pushMatrix();
         this.ankleMaterial.apply();
+        this.scene.appearance_bee_leg.apply();
         this.scene.rotate(90 * (Math.PI / 180),0,1,0);
         this.scene.translate(0,0,1);
         this.scene.scale(0.1,0.1,0.1);
@@ -44,6 +46,7 @@ export class MyLeg extends CGFobject {
         //Display Bottom Leg
         this.scene.pushMatrix();
         this.bottomlegMaterial.apply();
+        this.scene.appearance_bee_leg.apply();
         this.scene.rotate(90 * (Math.PI / 180),0,1,0);
         this.scene.translate(0,0,1);
         this.scene.rotate(45 * (Math.PI / 180),1,0,0);

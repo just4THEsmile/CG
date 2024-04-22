@@ -25,6 +25,7 @@ export class MyAntenna extends CGFobject {
         //Display Antenna Flagellum
         this.scene.pushMatrix();
         this.antennaScapeMaterial.apply();
+        this.scene.appearance_bee_antennae.apply();
         this.scene.rotate(-45 * (Math.PI / 180),1,0,0);
         this.antennaScape.display();
         this.scene.popMatrix();
@@ -32,6 +33,7 @@ export class MyAntenna extends CGFobject {
         //Display Antenna Scape
         this.scene.pushMatrix();
         this.antennaFlagellumMaterial.apply();
+        this.scene.appearance_bee_antennae.apply();
         this.scene.rotate(-45 * (Math.PI / 180),1,0,0);
         this.scene.translate(0,0,1);
         this.scene.scale(0.1,0.1,0.1);

@@ -33,6 +33,8 @@ export class MyScene extends CGFscene {
     this.gl.depthFunc(this.gl.LEQUAL);
     this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
     this.gl.enable(this.gl.BLEND);
+    this.gl.frontFace(this.gl.CWW);
+
 
     //Initialize scene parameters
     this.speedFactor = 1; 
@@ -66,6 +68,9 @@ export class MyScene extends CGFscene {
     this.texture_earth = new CGFtexture(this, "images/earth.jpg");
     this.texture_rock = new CGFtexture(this, "images/rock_texture.jpg");
     this.texture_bee = new CGFtexture(this, "images/bee_texture.jpg");
+    this.texture_bee_antennae = new CGFtexture(this, "images/bee_antennae.jpg");
+    this.texture_bee_leg = new CGFtexture(this, "images/bee_leg.jpg");
+    this.texture_bee_eye = new CGFtexture(this, "images/bee_eye.png");
     
 
     //Appearances
@@ -73,7 +78,6 @@ export class MyScene extends CGFscene {
     this.appearance_earth.setTexture(this.texture_earth);
     this.appearance_earth.setTextureWrap('REPEAT', 'REPEAT');
   
-
     this.appearance_terrain = new CGFappearance(this);
     this.appearance_terrain.setTexture(this.texture_terrain);
     this.appearance_terrain.setTextureWrap('REPEAT', 'REPEAT');
@@ -86,6 +90,17 @@ export class MyScene extends CGFscene {
     this.appearance_bee.setTexture(this.texture_bee);
     this.appearance_bee.setTextureWrap('CLAMP_TO_EDGE', 'CLAMP_TO_EDGE');
 
+    this.appearance_bee_antennae = new CGFappearance(this);
+    this.appearance_bee_antennae.setTexture(this.texture_bee_antennae);
+    this.appearance_bee_antennae.setTextureWrap('REPEAT', 'REAPEAT');
+
+    this.appearance_bee_leg = new CGFappearance(this);
+    this.appearance_bee_leg.setTexture(this.texture_bee_leg);
+    this.appearance_bee_leg.setTextureWrap('REPEAT', 'REPEAT');
+
+    this.appearance_bee_eye = new CGFappearance(this);
+    this.appearance_bee_eye.setTexture(this.texture_bee_eye);
+    this.appearance_bee_eye.setTextureWrap('REPEAT', 'REPEAT');
 
 
 
