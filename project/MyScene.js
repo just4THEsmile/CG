@@ -57,9 +57,9 @@ export class MyScene extends CGFscene {
     this.displayPlane = false;
     this.displayPanorama = true;
     this.displayRock = false;
-    this.displayRockSet = false;
-    this.displayRockPyramid = false;
-    this.displayBee = true;
+    this.displayRockSet = true;
+    this.displayRockPyramid = true;
+    this.displayBee = false;
 
 
     //Textures
