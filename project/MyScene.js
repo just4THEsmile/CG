@@ -7,6 +7,7 @@ import { MyRockSet } from "./MyRockSet.js";
 import { MyRockPyramid } from "./MyRockPyramid.js";
 import { MyBee } from "./MyBee.js";
 import { MyPollen } from "./MyPollen.js"
+import { MyHive } from "./MyHive.js";
 
 /**
  * MyScene
@@ -49,8 +50,10 @@ export class MyScene extends CGFscene {
     this.rock = new MyRock(this, 32, 32, false);
     this.rockset = new MyRockSet(this, 5, 32, 32);
     this.rockpyramid = new MyRockPyramid(this, 5, 32, 32);
-    this.bee = new MyBee(this, 0, 0, 0);
-    this.polen = new MyPollen(this, 32, 32, false);
+    this.pollens = [new MyPollen(this, 32, 32, 0,-10,0)]; 
+    this.hive = new MyHive(this, 0, 0, 0);
+    this.bee = new MyBee(this, 0, 0, 0, this.pollens, null);
+
 
     //Objects connected to MyInterface
     this.displayAxis = true;
@@ -61,8 +64,9 @@ export class MyScene extends CGFscene {
     this.displayRock = false;
     this.displayRockSet = false;
     this.displayRockPyramid = false;
-    this.displayBee = false;
-    this.displayPollen = true;
+    this.displayBee = true;
+    this.displayPollen = false;
+    this.displayHive = false;
 
 
     //Textures
@@ -75,6 +79,8 @@ export class MyScene extends CGFscene {
     this.texture_bee_leg = new CGFtexture(this, "images/bee_leg.jpg");
     this.texture_bee_eye = new CGFtexture(this, "images/bee_eye.png");
     this.texture_pollen = new CGFtexture(this, "images/pollen.jpg");
+    this.texture_wood = new CGFtexture(this, "images/wood.jpg");
+    this.texture_beehive = new CGFtexture(this, "images/beehive.jpg");
     
 
     //Appearances
@@ -110,6 +116,18 @@ export class MyScene extends CGFscene {
     this.appearance_pollen.setTexture(this.texture_pollen);
     this.appearance_pollen.setTextureWrap('REPEAT', 'REPEAT');
 
+    this.appearance_wood = new CGFappearance(this);
+    this.appearance_wood.setTexture(this.texture_wood);
+    this.appearance_wood.setTextureWrap('REPEAT', 'REPEAT');
+
+    this.appearance_beehive = new CGFappearance(this);
+    this.appearance_beehive.setTexture(this.texture_beehive);
+    this.appearance_beehive.setTextureWrap('REPEAT', 'REPEAT');
+
+
+    //Shaders
+    this.orangeShader = new CGFshader(this.gl, "shaders/orangeTone.vert", "shaders/orangeTone.frag");
+
 
   }
   initLights() {
@@ -117,6 +135,10 @@ export class MyScene extends CGFscene {
     this.lights[0].setDiffuse(1.0, 1.0, 1.0, 1.0);
     this.lights[0].enable();
     this.lights[0].update();
+    this.lights[1].setPosition(16, 7, 10, 1);
+    this.lights[1].setDiffuse(1.0, 1.0, 1.0, 1.0);
+    this.lights[1].enable();
+    this.lights[1].update();
   }
   initCameras() {
     this.camera = new CGFcamera(
@@ -173,7 +195,7 @@ export class MyScene extends CGFscene {
 
       this.pushMatrix();
       this.appearance_terrain.apply();
-      this.translate(0,-100,0);
+      this.translate(0,-20,0);
       this.scale(400,400,400);
       this.rotate(-Math.PI/2.0,1,0,0);
       this.plane.display();
@@ -190,7 +212,6 @@ export class MyScene extends CGFscene {
 
     }
 
-
     if(this.displayRockSet){
 
       this.rockset.display();
@@ -201,6 +222,30 @@ export class MyScene extends CGFscene {
       }
     }
 
+    if(this.displayRockPyramid){
+        this.rockpyramid.display();
+        if(this.displayNormals){
+          for(let child of this.rockpyramid.rocks){
+            child.enableNormalViz();
+          }
+        }
+    }  
+
+    if(this.displayPollen){
+      for(let polen of this.pollens){
+        polen.display();
+      }
+    }
+
+    if(this.displayHive){
+      this.hive.display();
+    }
+  
+    if(this.displayBee){
+      this.bee.display();
+    }
+
+    
     if(!this.displayNormals){
       this.sphere.disableNormalViz();
       this.plane.disableNormalViz();
@@ -211,24 +256,6 @@ export class MyScene extends CGFscene {
       for(let child of this.rockpyramid.rocks){
         child.disableNormalViz();
       }
-    }
-
-    if(this.displayRockPyramid){
-        this.rockpyramid.display();
-        if(this.displayNormals){
-          for(let child of this.rockpyramid.rocks){
-            child.enableNormalViz();
-          }
-        }
-      }  
-
-    if(this.displayPollen){
-      this.polen.display();
-      if(this.displayNormals) this.polen.enableNormalViz();
-    }
-  
-    if(this.displayBee){
-      this.bee.display();
     }
 
   }
@@ -245,7 +272,7 @@ export class MyScene extends CGFscene {
 
     if(this.gui.isKeyPressed("KeyW")){
       
-      this.bee.accelerate(0.000001);
+      this.bee.accelerate(0.001);
       
       text+=" W ";
       keysPressed = true;
@@ -253,7 +280,7 @@ export class MyScene extends CGFscene {
 
     if(this.gui.isKeyPressed("KeyS")){
       
-      this.bee.accelerate(-0.000001);
+      this.bee.accelerate(-0.001);
       
       text+=" S ";
       keysPressed=true;
@@ -284,6 +311,22 @@ export class MyScene extends CGFscene {
       this.bee.reset();
       
       text+=" R ";
+      keysPressed=true;
+    }
+
+    if(this.gui.isKeyPressed("KeyF")){
+
+      this.bee.moveY(0.25);
+
+      text+=" F ";
+      keysPressed=true;
+    }
+
+    if(this.gui.isKeyPressed("KeyP")){
+
+      this.bee.moveY(-0.25);
+
+      text+=" P ";
       keysPressed=true;
     }
 

@@ -6,20 +6,20 @@ import {MyWing} from "./Objects/MyWing.js";
 import {MyAntenna} from "./Objects/MyAntenna.js";
 import {MyAbdomen} from "./Objects/MyAbdomen.js";
 
-export class MyBee extends CGFobject {
+export class MyBee extends CGFobject{
 
-    constructor(scene,x,y,z){
+    constructor(scene,x,y,z,pollens,hive){
         
         super(scene);
         
         this.x = x;
         this.y = y;
+        this.baseY = y;
         this.z = z;
 
         this.orientation = 0;
 
         this.velocity = [0,0,0];
-
 
         this.head = new MyHead(scene);
         this.leftEye = new MyEye(scene);
@@ -35,32 +35,68 @@ export class MyBee extends CGFobject {
         this.frontRightWing = new MyWing(scene);
         this.backLeftWing = new MyWing(scene);
         this.backRightWing = new MyWing(scene);
+
+        this.current_pollen = null;
+        this.pollens = pollens;
+        this.rotate_legs_pollen = 0;
+        this.hive = hive;
     }
-
-
 
     update(t){
 
         this.speedFactor = this.scene.speedFactor;
         this.scaleFactor = this.scene.scaleFactor;
 
-        if (!this.time) {
-            this.time = t;
+        if (!this.lastUpdateTime) {
+            this.lastUpdateTime = t;
         }
         
-        let deltaTime = t - this.time;
-
-
-
+        let deltaTime = t - this.lastUpdateTime;
+        console.log("DeltaTime: " + deltaTime);
         this.x += this.velocity[0] * deltaTime;
         this.y += this.velocity[1] * deltaTime;
         this.z += this.velocity[2] * deltaTime;
 
         //Animation Bee Oscilation
-        this.y = 3 + Math.sin(2*Math.PI * t / 1000);
+        this.y = this.baseY + Math.sin(2*Math.PI * t / 1000);
 
         //Animation Bee Wing
         this.wingAngle = Math.sin(2*Math.PI * t / 500) * 20; 
+
+        if(this.checkPollen()){
+            this.rotate_legs_pollen = 20;
+        }
+        else{
+            this.rotate_legs_pollen = 0;
+        }
+
+        this.lastUpdateTime = t;
+    }
+    
+    checkPollen(){
+
+        if(this.current_pollen != null){
+            return true;
+        }
+
+        for(let i = 0; i < this.pollens.length; i++){
+            let dx = this.pollens[i].x - this.x;
+            let dy = this.pollens[i].y - this.y;
+            let dz = this.pollens[i].z - this.z;
+
+            let distance = Math.sqrt(dx*dx + dy*dy + dz*dz);
+
+    
+            if (distance < 3) {
+                this.current_pollen = this.pollens[i];
+                console.log("Pollen Found");
+                
+                this.pollens.splice(i,1);
+
+                return false;
+            }
+        }
+
     }
 
     turn(v){
@@ -84,12 +120,17 @@ export class MyBee extends CGFobject {
         this.velocity[0] = speed * Math.sin(this.orientation);
         this.velocity[2] = speed * Math.cos(this.orientation);
 
-        console.log(this.velocity);
+    }
+
+    moveY(v){
+        this.baseY += v * this.speedFactor;
+
     }
 
     reset(){
         this.x = 0;
-        //this.y = 0;
+        this.y = 0;
+        this.baseY = 0;
         this.z = 0;
         this.orientation = 0;
         this.velocity = [0, 0, 0];
@@ -146,10 +187,11 @@ export class MyBee extends CGFobject {
         this.rightAntenna.display();
         this.scene.popMatrix();
         
+
         //Display Front Left Leg
         this.scene.pushMatrix();
         this.scene.translate(0.8,0,-1);
-        this.scene.rotate(-40 * (Math.PI / 180),0,0,1);
+        this.scene.rotate((-40 - this.rotate_legs_pollen ) * (Math.PI / 180),0,0,1);
         this.frontLeftLeg.display();
         this.scene.popMatrix();
 
@@ -157,14 +199,14 @@ export class MyBee extends CGFobject {
         this.scene.pushMatrix();
         this.scene.translate(-0.8,0,-1);
         this.scene.rotate(Math.PI, 0, 1, 0);
-        this.scene.rotate(-40 * (Math.PI / 180),0,0,1);
+        this.scene.rotate((-40 - this.rotate_legs_pollen ) * (Math.PI / 180),0,0,1);
         this.frontRightLeg.display();
         this.scene.popMatrix();
 
         //Display Back Left Leg
         this.scene.pushMatrix();
         this.scene.translate(0.8,0,-3);
-        this.scene.rotate(-40 * (Math.PI / 180),0,0,1);
+        this.scene.rotate((-40 - this.rotate_legs_pollen ) * (Math.PI / 180),0,0,1);
         this.backLeftLeg.display();
         this.scene.popMatrix(); 
 
@@ -172,11 +214,20 @@ export class MyBee extends CGFobject {
         this.scene.pushMatrix();
         this.scene.translate(-0.8,0,-3);
         this.scene.rotate(Math.PI, 0, 1, 0);
-        this.scene.rotate(-40 * (Math.PI / 180),0,0,1);
+        this.scene.rotate((-40 - this.rotate_legs_pollen ) *  (Math.PI / 180),0,0,1);
         this.backRightLeg.display();
         this.scene.popMatrix();
-        
-        
+
+        //Check if carrying a pollen
+        if(this.current_pollen != null){
+            this.scene.pushMatrix();
+            this.scene.translate(0,7.85,-2);
+            this.scene.translate(this.current_pollen.x, this.current_pollen.y, this.current_pollen.z); 
+            this.scene.rotate(Math.PI / 2, 1, 0, 0);
+            this.scene.translate(-this.current_pollen.x, -this.current_pollen.y, -this.current_pollen.z);
+            this.current_pollen.display();
+            this.scene.popMatrix();
+        }
         
         //Display Front Left Wing
         this.scene.pushMatrix();
