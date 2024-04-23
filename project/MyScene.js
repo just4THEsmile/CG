@@ -16,6 +16,9 @@ import { MyHive } from "./MyHive.js";
 export class MyScene extends CGFscene {
   constructor() {
     super();
+    this.lastOKeyTime = 0;
+    this.OKeyDelay = 1000;
+
   }
   init(application) {
     super.init(application);
@@ -50,9 +53,9 @@ export class MyScene extends CGFscene {
     this.rock = new MyRock(this, 32, 32, false);
     this.rockset = new MyRockSet(this, 5, 32, 32);
     this.rockpyramid = new MyRockPyramid(this, 5, 32, 32);
-    this.pollens = [new MyPollen(this, 32, 32, 0,-10,0)]; 
-    this.hive = new MyHive(this, 0, 0, 0);
-    this.bee = new MyBee(this, 0, 0, 0, this.pollens, null);
+    this.pollens = [new MyPollen(this, 32, 32, -32,5,-87)]; 
+    this.hive = new MyHive(this, -20, -40, 40);
+    this.bee = new MyBee(this, 0, 0, 0, this.pollens, this.hive);
 
 
     //Objects connected to MyInterface
@@ -65,8 +68,8 @@ export class MyScene extends CGFscene {
     this.displayRockSet = false;
     this.displayRockPyramid = false;
     this.displayBee = true;
-    this.displayPollen = false;
-    this.displayHive = false;
+    this.displayPollen = true;
+    this.displayHive = true;
 
 
     //Textures
@@ -328,6 +331,21 @@ export class MyScene extends CGFscene {
 
       text+=" P ";
       keysPressed=true;
+    }
+
+    if(this.gui.isKeyPressed("KeyO")){
+      
+      let currentTime = Date.now();
+
+      if (currentTime - this.lastOKeyTime > this.OKeyDelay) {
+        this.bee.intelligence();
+
+        text+=" O ";
+        keysPressed=true;
+
+        this.lastOKeyTime = currentTime;
+      }
+    
     }
 
     if(keysPressed){
