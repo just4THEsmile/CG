@@ -70,6 +70,7 @@ export class MyScene extends CGFscene {
     this.displayBee = true;
     this.displayPollen = true;
     this.displayHive = true;
+    this.useBeeCamera = false;
 
 
     //Textures
@@ -151,6 +152,14 @@ export class MyScene extends CGFscene {
       vec3.fromValues(50, 10, 15),
       vec3.fromValues(0, 0, 0)
     );
+    this.beeCamera = new CGFcamera(
+      0.4, 
+      0.1, 
+      500, 
+      vec3.fromValues(0, 0, 0), 
+      vec3.fromValues(0, 0, 0)
+    );
+    this.defaultCamera = this.camera;
   }
   setDefaultAppearance() {
     this.setAmbient(0.2, 0.4, 0.8, 1.0);
@@ -159,6 +168,12 @@ export class MyScene extends CGFscene {
     this.setShininess(10.0);
   }
   display() {
+    
+    if (this.useBeeCamera) {
+      this.camera = this.beeCamera;
+    } else {
+      this.camera = this.defaultCamera;
+    }
     // ---- BEGIN Background, camera and axis setup
     // Clear image and depth buffer everytime we update the scene
     this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
@@ -266,6 +281,15 @@ export class MyScene extends CGFscene {
 
     this.bee.update(t);
     this.checkKeys();
+
+    let beePosition = this.bee.getPosition();
+    let beeOrientation = this.bee.getOrientation();
+    this.beeCamera.setPosition(vec3.fromValues(beePosition.x, beePosition.y, beePosition.z));
+    this.beeCamera.setTarget(vec3.fromValues(
+        beePosition.x + Math.sin(beeOrientation),
+        beePosition.y,
+        beePosition.z + Math.cos(beeOrientation)
+    ));
 
 
   }

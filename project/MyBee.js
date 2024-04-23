@@ -150,9 +150,9 @@ export class MyBee extends CGFobject{
         let distance = Math.sqrt(dx*dx + dy*dy + dz*dz);
 
         if (distance > 1) {
-            this.velocity[0] = (dx / distance)/100;
-            this.velocity[1] = (dy / distance)/100;
-            this.velocity[2] = (dz / distance)/100;
+            this.velocity[0] = ((dx / distance)/100) * this.speedFactor;
+            this.velocity[1] = ((dy / distance)/100) * this.speedFactor;
+            this.velocity[2] = ((dz / distance)/100) * this.speedFactor;
         } else {
             this.velocity[0] = 0;
             this.velocity[1] = 0;
@@ -393,6 +393,14 @@ export class MyBee extends CGFobject{
         
         this.scene.popMatrix();
 
+    }
+
+    getPosition() {
+        return { x: this.x, y: this.y, z: this.z };
+    }
+
+    getOrientation() {
+        return this.orientation;
     }
 
 
