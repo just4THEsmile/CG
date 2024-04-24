@@ -284,7 +284,16 @@ export class MyScene extends CGFscene {
 
     let beePosition = this.bee.getPosition();
     let beeOrientation = this.bee.getOrientation();
-    this.beeCamera.setPosition(vec3.fromValues(beePosition.x, beePosition.y, beePosition.z));
+    
+    let distanceBehind = 10;
+    let distanceAbove = 5;
+    
+    this.beeCamera.setPosition(vec3.fromValues(
+      beePosition.x - distanceBehind * Math.sin(beeOrientation),
+      beePosition.y + distanceAbove,
+      beePosition.z - distanceBehind * Math.cos(beeOrientation)
+    ));
+
     this.beeCamera.setTarget(vec3.fromValues(
         beePosition.x + Math.sin(beeOrientation),
         beePosition.y,
