@@ -7,6 +7,7 @@ import {MyAntenna} from "./Objects/MyAntenna.js";
 import {MyAbdomen} from "./Objects/MyAbdomen.js";
 import {MyTorax} from "./Objects/MyTorax.js";
 import {MyPollen} from "./MyPollen.js";
+import {MySting} from "./Objects/MySting.js";
 
 export class MyBee extends CGFobject{
 
@@ -24,20 +25,14 @@ export class MyBee extends CGFobject{
         this.velocity = [0,0,0];
 
         this.head = new MyHead(scene);
-        this.leftEye = new MyEye(scene);
-        this.rightEye = new MyEye(scene);
+        this.eye = new MyEye(scene);
         this.torax = new MyTorax(scene);
         this.abdomen = new MyAbdomen(scene);
-        this.leftAntenna = new MyAntenna(scene);
-        this.rightAntenna = new MyAntenna(scene);
-        this.frontLeftLeg = new MyLeg(scene);
-        this.frontRightLeg = new MyLeg(scene);
-        this.backLeftLeg = new MyLeg(scene);
-        this.backRightLeg = new MyLeg(scene);
-        this.frontLeftWing = new MyWing(scene);
-        this.frontRightWing = new MyWing(scene);
-        this.backLeftWing = new MyWing(scene);
-        this.backRightWing = new MyWing(scene);
+        this.antenna = new MyAntenna(scene);
+        this.leg = new MyLeg(scene);
+        this.sting = new MySting(scene);
+        this.wing = new MyWing(scene);
+
 
         this.bee_AI = false;
         this.current_pollen = null;
@@ -88,7 +83,7 @@ export class MyBee extends CGFobject{
 
 
         //Animation Bee Oscilation
-        this.y = this.baseY //+ Math.sin(2*Math.PI * t / 1000);
+        this.y = this.baseY + Math.sin(2*Math.PI * t / 1000);
 
         //Animation Bee Wing
         this.wingAngle = Math.sin(2*Math.PI * t / 500) * 25; 
@@ -111,7 +106,7 @@ export class MyBee extends CGFobject{
 
         //Bee AI
         if(this.bee_AI && this.target){
-            this.moveTowards(this.target);
+            this.moveTowards(this.target,t);
         }
 
         this.lastUpdateTime = t;
@@ -138,7 +133,7 @@ export class MyBee extends CGFobject{
         return nearestPollen;
     }
 
-    moveTowards(target){
+    moveTowards(target,t){
 
         this.offset = 0;
         if(this.target == this.hive){
@@ -155,6 +150,7 @@ export class MyBee extends CGFobject{
             this.velocity[0] = ((dx / distance)/100) * this.speedFactor;
             this.velocity[1] = ((dy / distance)/100) * this.speedFactor;
             this.velocity[2] = ((dz / distance)/100) * this.speedFactor;
+
         } else {
             this.velocity[0] = 0;
             this.velocity[1] = 0;
@@ -270,13 +266,13 @@ export class MyBee extends CGFobject{
         //Display Left Eye
         this.scene.pushMatrix();
         this.scene.translate(0.45,0.0,0.5);
-        this.leftEye.display();
+        this.eye.display();
         this.scene.popMatrix();
 
         // Display Right Eye
         this.scene.pushMatrix();        
         this.scene.translate(-0.45, 0.0, 0.5);
-        this.rightEye.display();
+        this.eye.display();
         this.scene.popMatrix();
 
         //Display Torax
@@ -298,14 +294,14 @@ export class MyBee extends CGFobject{
         this.scene.pushMatrix();
         this.scene.translate(-0.1,0.5,0.5);
         this.scene.rotate(-20 * (Math.PI / 180),0,1,0);
-        this.leftAntenna.display();
+        this.antenna.display();
         this.scene.popMatrix();
 
         // Display rightAntenna
         this.scene.pushMatrix();
         this.scene.translate(0.1, 0.5, 0.5); 
         this.scene.rotate(20 * (Math.PI / 180), 0, 1, 0); 
-        this.rightAntenna.display();
+        this.antenna.display();
         this.scene.popMatrix();
         
 
@@ -314,7 +310,7 @@ export class MyBee extends CGFobject{
         this.scene.translate(0.55,0,-0.6);
         this.scene.rotate(-40 * (Math.PI/180), 0, 1, 0);
         this.scene.rotate((-40 - this.rotate_legs_pollen ) * (Math.PI / 180),0,0,1);
-        this.frontLeftLeg.display();
+        this.leg.display();
         this.scene.popMatrix();
 
         //Display Front Right Leg
@@ -322,7 +318,7 @@ export class MyBee extends CGFobject{
         this.scene.translate(-0.55,0,-0.6);
         this.scene.rotate(220 * (Math.PI/180), 0, 1, 0);
         this.scene.rotate((-40 - this.rotate_legs_pollen ) * (Math.PI / 180),0,0,1);
-        this.frontRightLeg.display();
+        this.leg.display();
         this.scene.popMatrix();
 
         //Display Back Left Leg
@@ -330,7 +326,7 @@ export class MyBee extends CGFobject{
         this.scene.translate(0.55,0,-1.3);
         this.scene.rotate(40 * (Math.PI/180), 0, 1, 0);
         this.scene.rotate((-40 - this.rotate_legs_pollen ) * (Math.PI / 180),0,0,1);
-        this.backLeftLeg.display();
+        this.leg.display();
         this.scene.popMatrix(); 
 
         //Display Back Right Leg
@@ -338,7 +334,14 @@ export class MyBee extends CGFobject{
         this.scene.translate(-0.55,0,-1.3);
         this.scene.rotate(140 * (Math.PI/180), 0, 1, 0);
         this.scene.rotate((-40 - this.rotate_legs_pollen ) *  (Math.PI / 180),0,0,1);
-        this.backRightLeg.display();
+        this.leg.display();
+        this.scene.popMatrix();
+
+        //Display Sting
+        this.scene.pushMatrix();
+        this.scene.translate(0,-2,-5);
+        this.scene.rotate(-130*(Math.PI/180),1,0,0);
+        this.sting.display();
         this.scene.popMatrix();
 
         //Check if carrying a pollen
@@ -363,7 +366,7 @@ export class MyBee extends CGFobject{
         this.scene.rotate(40 * (Math.PI / 180),0,0,1);
         this.scene.rotate(-40 * (Math.PI / 180),0,1,0);
         this.scene.scale(0.8,1,100);
-        this.frontLeftWing.display();
+        this.wing.display();
         this.scene.popMatrix();
         
         //Display Front Right Wing
@@ -375,7 +378,7 @@ export class MyBee extends CGFobject{
         this.scene.rotate(-40 * (Math.PI / 180),0,0,1);
         this.scene.rotate(40 * (Math.PI / 180),0,1,0);
         this.scene.scale(0.8,1,0.3);
-        this.frontRightWing.display();
+        this.wing.display();
         this.scene.popMatrix();
         
         //Display Back Left Wing
@@ -387,7 +390,7 @@ export class MyBee extends CGFobject{
         this.scene.rotate(40 * (Math.PI / 180),0,0,1);
         this.scene.rotate(-40 * (Math.PI / 180),0,1,0);
         this.scene.scale(1.2,1.5,1.2);
-        this.backLeftWing.display();
+        this.wing.display();
         this.scene.popMatrix();
         
         //Display Back Right Wing
@@ -399,7 +402,7 @@ export class MyBee extends CGFobject{
         this.scene.rotate(-40 * (Math.PI / 180),0,0,1);
         this.scene.rotate(40 * (Math.PI / 180),0,1,0);
         this.scene.scale(1.2,1.5,1.2);
-        this.backRightWing.display();
+        this.wing.display();
         this.scene.popMatrix();
 
         //End Display Bee

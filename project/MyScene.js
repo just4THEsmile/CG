@@ -53,7 +53,7 @@ export class MyScene extends CGFscene {
     this.rock = new MyRock(this, 32, 32, false);
     this.rockset = new MyRockSet(this, 5, 32, 32);
     this.rockpyramid = new MyRockPyramid(this, 5, 32, 32);
-    this.pollens = [new MyPollen(this, 32, 32, -32,5,-87)]; 
+    this.pollens = [new MyPollen(this, 32, 32, -10,-10,-27)]; 
     this.hive = new MyHive(this, -20, -40, 40);
     this.bee = new MyBee(this, 0, 0, 0, this.pollens, this.hive);
 
