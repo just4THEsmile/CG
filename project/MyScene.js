@@ -85,7 +85,8 @@ export class MyScene extends CGFscene {
     this.texture_pollen = new CGFtexture(this, "images/pollen.jpg");
     this.texture_wood = new CGFtexture(this, "images/wood.jpg");
     this.texture_beehive = new CGFtexture(this, "images/beehive.jpg");
-    
+    this.texture_wing = new CGFtexture(this, "images/wing.jpg");
+
 
     //Appearances
     this.appearance_earth = new CGFappearance(this);
@@ -128,6 +129,14 @@ export class MyScene extends CGFscene {
     this.appearance_beehive.setTexture(this.texture_beehive);
     this.appearance_beehive.setTextureWrap('REPEAT', 'REPEAT');
 
+    this.appearance_wing = new CGFappearance(this);
+    this.appearance_wing.setTexture(this.texture_wing);
+    this.appearance_wing.setTextureWrap('REPEAT', 'REPEAT');
+    this.appearance_wing.setAmbient(1.0, 1.0, 1.0, 0.1); 
+    this.appearance_wing.setDiffuse(1.0, 1.0, 1.0, 0.2);
+    this.appearance_wing.setSpecular(1.0, 1.0, 1.0, 0.3);
+    this.appearance_wing.setEmission(1.0, 1.0, 1.0, 0.1);
+    this.appearance_wing.setShininess(10.0);
 
     //Shaders
     this.orangeShader = new CGFshader(this.gl, "shaders/orangeTone.vert", "shaders/orangeTone.frag");
