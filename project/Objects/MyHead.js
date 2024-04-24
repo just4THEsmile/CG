@@ -23,6 +23,8 @@ export class MyHead extends CGFobject {
     display(){
         this.scene.pushMatrix();
         this.headMaterial.apply();
+        this.scene.rotate(-5 * (Math.PI / 180),1,0,0);
+        this.scene.scale(0.8,1,0.6);
         this.head.display();
         this.scene.popMatrix();
     }

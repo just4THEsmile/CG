@@ -5,6 +5,7 @@ import {MyLeg} from "./Objects/MyLeg.js";
 import {MyWing} from "./Objects/MyWing.js";
 import {MyAntenna} from "./Objects/MyAntenna.js";
 import {MyAbdomen} from "./Objects/MyAbdomen.js";
+import {MyTorax} from "./Objects/MyTorax.js";
 import {MyPollen} from "./MyPollen.js";
 
 export class MyBee extends CGFobject{
@@ -25,6 +26,7 @@ export class MyBee extends CGFobject{
         this.head = new MyHead(scene);
         this.leftEye = new MyEye(scene);
         this.rightEye = new MyEye(scene);
+        this.torax = new MyTorax(scene);
         this.abdomen = new MyAbdomen(scene);
         this.leftAntenna = new MyAntenna(scene);
         this.rightAntenna = new MyAntenna(scene);
@@ -86,10 +88,10 @@ export class MyBee extends CGFobject{
 
 
         //Animation Bee Oscilation
-        this.y = this.baseY + Math.sin(2*Math.PI * t / 1000);
+        this.y = this.baseY //+ Math.sin(2*Math.PI * t / 1000);
 
         //Animation Bee Wing
-        this.wingAngle = Math.sin(2*Math.PI * t / 500) * 20; 
+        this.wingAngle = Math.sin(2*Math.PI * t / 500) * 25; 
 
         //Check if Bee is near the Pollen
         if(this.checkPollen()){
@@ -252,36 +254,42 @@ export class MyBee extends CGFobject{
     }
 
     display(){
-
+        
         //Start Display Bee
         this.scene.pushMatrix();
         this.scene.scale(this.scaleFactor,this.scaleFactor,this.scaleFactor);
         this.scene.translate(this.x,this.y,this.z);
         this.scene.rotate(this.orientation,0,1,0);
-        
+
         //Display Head
         this.scene.pushMatrix();
-        this.scene.translate(0,0,0);
+        this.scene.translate(0,0,0.3);
         this.head.display();
         this.scene.popMatrix();
 
         //Display Left Eye
         this.scene.pushMatrix();
-        this.scene.translate(0.55,0.6,0.55);
-        this.scene.rotate(-50 * (Math.PI / 180),1,0,0);
+        this.scene.translate(0.45,0.0,0.5);
         this.leftEye.display();
         this.scene.popMatrix();
 
         // Display Right Eye
-        this.scene.pushMatrix();
-        this.scene.translate(-0.55, 0.6, 0.55); 
-        this.scene.rotate(-50 * (Math.PI / 180), 1, 0, 0); 
+        this.scene.pushMatrix();        
+        this.scene.translate(-0.45, 0.0, 0.5);
         this.rightEye.display();
         this.scene.popMatrix();
+
+        //Display Torax
+        this.scene.pushMatrix();
+        this.scene.translate(0,0.2,-1);
+        this.torax.display();
+        this.scene.popMatrix();
+
         
         //Display Abdomen
         this.scene.pushMatrix();
-        this.scene.translate(0,-0.2,-2);
+        this.scene.translate(0,-1.1,-3.4);
+        this.scene.rotate(-30*(Math.PI/180),1,0,0);
         this.scene.rotate(-Math.PI/2,1,0,0);
         this.abdomen.display();
         this.scene.popMatrix();
@@ -303,30 +311,32 @@ export class MyBee extends CGFobject{
 
         //Display Front Left Leg
         this.scene.pushMatrix();
-        this.scene.translate(0.8,0,-1);
+        this.scene.translate(0.55,0,-0.6);
+        this.scene.rotate(-40 * (Math.PI/180), 0, 1, 0);
         this.scene.rotate((-40 - this.rotate_legs_pollen ) * (Math.PI / 180),0,0,1);
         this.frontLeftLeg.display();
         this.scene.popMatrix();
 
         //Display Front Right Leg
         this.scene.pushMatrix();
-        this.scene.translate(-0.8,0,-1);
-        this.scene.rotate(Math.PI, 0, 1, 0);
+        this.scene.translate(-0.55,0,-0.6);
+        this.scene.rotate(220 * (Math.PI/180), 0, 1, 0);
         this.scene.rotate((-40 - this.rotate_legs_pollen ) * (Math.PI / 180),0,0,1);
         this.frontRightLeg.display();
         this.scene.popMatrix();
 
         //Display Back Left Leg
         this.scene.pushMatrix();
-        this.scene.translate(0.8,0,-3);
+        this.scene.translate(0.55,0,-1.3);
+        this.scene.rotate(40 * (Math.PI/180), 0, 1, 0);
         this.scene.rotate((-40 - this.rotate_legs_pollen ) * (Math.PI / 180),0,0,1);
         this.backLeftLeg.display();
         this.scene.popMatrix(); 
 
         //Display Back Right Leg
         this.scene.pushMatrix();
-        this.scene.translate(-0.8,0,-3);
-        this.scene.rotate(Math.PI, 0, 1, 0);
+        this.scene.translate(-0.55,0,-1.3);
+        this.scene.rotate(140 * (Math.PI/180), 0, 1, 0);
         this.scene.rotate((-40 - this.rotate_legs_pollen ) *  (Math.PI / 180),0,0,1);
         this.backRightLeg.display();
         this.scene.popMatrix();
@@ -337,37 +347,40 @@ export class MyBee extends CGFobject{
             this.new_pollen = new MyPollen(this.scene, 32, 32, 0, 0, 0);
 
             this.scene.pushMatrix();
-            this.scene.translate(0,-2,-2.1);
+            this.scene.translate(0,-2.8,-1.5);
+            this.scene.rotate(-30*(Math.PI/180),1,0,0);
             this.scene.rotate(Math.PI / 2, 1, 0, 0);
             this.new_pollen.display();
             this.scene.popMatrix();
         }
-        
+
         //Display Front Left Wing
         this.scene.pushMatrix();
-        this.scene.translate(0.75,0.3,-1.7);
+        this.scene.translate(0.80,0.3,-1);
         this.scene.rotate(this.wingAngle * (Math.PI / 180),0,0,1);
-        this.scene.translate(0.55,0.6,-0.30);
+        this.scene.translate(0.40,0.5,-0.30);
         this.scene.rotate(-Math.PI/2,1,0,0);
         this.scene.rotate(40 * (Math.PI / 180),0,0,1);
         this.scene.rotate(-40 * (Math.PI / 180),0,1,0);
+        this.scene.scale(0.8,1,100);
         this.frontLeftWing.display();
         this.scene.popMatrix();
         
         //Display Front Right Wing
         this.scene.pushMatrix();
-        this.scene.translate(-0.75,0.3,-1.7);
+        this.scene.translate(-0.80,0.3,-1);
         this.scene.rotate(-this.wingAngle * (Math.PI / 180),0,0,1);
-        this.scene.translate(-0.55,0.6,-0.30);
+        this.scene.translate(-0.40,0.6,-0.30);
         this.scene.rotate(-Math.PI/2,1,0,0);
         this.scene.rotate(-40 * (Math.PI / 180),0,0,1);
         this.scene.rotate(40 * (Math.PI / 180),0,1,0);
+        this.scene.scale(0.8,1,0.3);
         this.frontRightWing.display();
         this.scene.popMatrix();
         
         //Display Back Left Wing
         this.scene.pushMatrix();
-        this.scene.translate(0.85,0.2,-1.9);
+        this.scene.translate(0.80,0.2,-1.2);
         this.scene.rotate(this.wingAngle * (Math.PI / 180),0,0,1);
         this.scene.translate(0.55,0.6,-0.30);
         this.scene.rotate(-Math.PI/2,1,0,0);
@@ -379,7 +392,7 @@ export class MyBee extends CGFobject{
         
         //Display Back Right Wing
         this.scene.pushMatrix();
-        this.scene.translate(-0.85,0.2,-1.9);
+        this.scene.translate(-0.80,0.2,-1.2);
         this.scene.rotate(-this.wingAngle * (Math.PI / 180),0,0,1);
         this.scene.translate(-0.55,0.6,-0.30);
         this.scene.rotate(-Math.PI/2,1,0,0);
