@@ -32,6 +32,7 @@ export class MyBee extends CGFobject{
         this.leg = new MyLeg(scene);
         this.sting = new MySting(scene);
         this.wing = new MyWing(scene);
+        this.mandible = new MySting(scene);
 
 
         this.bee_AI = false;
@@ -83,7 +84,7 @@ export class MyBee extends CGFobject{
 
 
         //Animation Bee Oscilation
-        this.y = this.baseY + Math.sin(2*Math.PI * t / 1000);
+        this.y = this.baseY //+ Math.sin(2*Math.PI * t / 1000);
 
         //Animation Bee Wing
         this.wingAngle = Math.sin(2*Math.PI * t / 500) * 25; 
@@ -343,6 +344,23 @@ export class MyBee extends CGFobject{
         this.scene.rotate(-130*(Math.PI/180),1,0,0);
         this.sting.display();
         this.scene.popMatrix();
+
+        //Display Right Mandible
+        this.scene.pushMatrix();
+        this.scene.translate(0.2,-0.85,0.5);
+        this.scene.rotate(160*(Math.PI/180),1,0,0);
+        this.scene.scale(0.5,0.5,0.5);
+        this.mandible.display();
+        this.scene.popMatrix();
+        
+        //Display Left Mandible
+        this.scene.pushMatrix();
+        this.scene.translate(-0.2,-0.85,0.5);
+        this.scene.rotate(160*(Math.PI/180),1,0,0);
+        this.scene.scale(0.5,0.5,0.5);
+        this.mandible.display();
+        this.scene.popMatrix();
+        
 
         //Check if carrying a pollen
         if(this.current_pollen != null){
