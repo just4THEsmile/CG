@@ -84,7 +84,7 @@ export class MyBee extends CGFobject{
 
 
         //Animation Bee Oscilation
-        this.y = this.baseY //+ Math.sin(2*Math.PI * t / 1000);
+        this.y = this.baseY + Math.sin(2*Math.PI * t / 1000);
 
         //Animation Bee Wing
         this.wingAngle = Math.sin(2*Math.PI * t / 500) * 25; 
