@@ -19,14 +19,41 @@ export class MyInterface extends CGFinterface {
 
         //Checkbox element in GUI
         this.gui.add(this.scene, 'displayAxis').name('Display Axis');
+        this.gui.add(this.scene, 'displayNormals').name('Display Normals');
         this.gui.add(this.scene, 'displaySphere').name('Display Sphere');
         this.gui.add(this.scene, 'displayPlane').name('Display Plane');
         this.gui.add(this.scene, 'displayPanorama').name('Display Panorama');
+
         this.gui.add(this.scene, 'displayFlower').name('Display Flower');
+
+        this.gui.add(this.scene, 'displayRock').name('Display Rock');
+        this.gui.add(this.scene, 'displayRockSet').name('Display Rock Set');
+        this.gui.add(this.scene, 'displayRockPyramid').name('Display Rock Pyramid');
+        this.gui.add(this.scene, 'displayBee').name('Display Bee');
 
         //Slider element in GUI
         this.gui.add(this.scene, 'scaleFactor', 0.1, 5).name('Scale Factor');
-
+        this.initKeys();
         return true;
+    }
+
+    initKeys(){
+        this.scene.gui = this;
+        
+        this.processKey = function() {};
+
+        this.activeKeys = {};
+    }
+
+    processKeyDown(event){
+        this.activeKeys[event.code] = true;
+    }
+
+    processKeyUp(event){
+        this.activeKeys[event.code] = false;
+    }
+
+    isKeyPressed(keyCode){
+        return this.activeKeys[keyCode] || false;
     }
 }
