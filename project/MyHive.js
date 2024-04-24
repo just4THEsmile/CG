@@ -89,7 +89,7 @@ export class MyHive extends CGFobject{
             this.scene.appearance_beehive.apply();
             this.scene.translate(i*2 - 11, 10, 0); 
             this.scene.rotate(Math.PI/2, 0, 1, 0);
-            this.scene.scale(9, 8, 0.5);
+            this.scene.scale(9, 8, 0.30);
             this.frames[i].display();
             this.scene.popMatrix();
 
@@ -98,7 +98,7 @@ export class MyHive extends CGFobject{
             this.scene.appearance_wood.apply();
             this.scene.translate(i*2 - 11, 18.5, 0); 
             this.scene.rotate(Math.PI/2, 0, 1, 0);
-            this.scene.scale(8, 0.5, 0.5);
+            this.scene.scale(8, 0.5, 0.35);
             this.frames[i].display();
             this.scene.popMatrix();
 
