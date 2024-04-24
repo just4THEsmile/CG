@@ -40,6 +40,7 @@ export class MyBee extends CGFobject{
         this.pollens = pollens;
         this.rotate_legs_pollen = 0;
         this.hive = hive;
+
         
 
     }
@@ -55,6 +56,7 @@ export class MyBee extends CGFobject{
             return;
         }
         console.log("Bee AI Activated")
+        this.initialPosition = { x: this.x, y: this.y, z: this.z };
         if(this.current_pollen == null){
             console.log("Bee AI Going to Pollen");
             this.target = this.findNearestPollen();
