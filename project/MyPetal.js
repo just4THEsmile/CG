@@ -1,4 +1,4 @@
-import {CGFobject,CGFappearance} from '../lib/CGF.js';
+import {CGFobject,CGFappearance,CGFshader} from '../lib/CGF.js';
 import { MyTriangle } from './MyTriangle.js';
 
 export class MyPetal extends CGFobject {
@@ -9,8 +9,7 @@ export class MyPetal extends CGFobject {
         this.heart_radius = heart_radius;
         this.petal_size =  external_radius-heart_radius;
         this.axis_angle = axis_angle;
-        this.triangle1= new MyTriangle(this.scene, this.petal_size);
-        this.triangle2= new MyTriangle(this.scene, this.petal_size);
+        this.triangle= new MyTriangle(this.scene, this.petal_size);
         this.color_petals = color_petals;
         this.angle = angle;
         this.x = x;
@@ -25,15 +24,10 @@ export class MyPetal extends CGFobject {
     }
 
     initBuffers() {
-        this.petal_appearance = new CGFappearance(this.scene);
-        this.petal_appearance.setAmbient(this.color_petals[0], this.color_petals[1], this.color_petals[2], 1.0);
-        this.petal_appearance.setDiffuse(this.color_petals[0], this.color_petals[1], this.color_petals[2], 1.0);
-        this.petal_appearance.setSpecular(0.1, 0.1, 0.1, 1.0);
-        this.petal_appearance.setShininess(10.0);
-        
 
     }
     display(){
+        this.scene.main_shader.setUniformsValues({color_of_text: this.color_petals});
         this.scene.pushMatrix();
         this.scene.translate(this.x, this.y, this.z);
         this.scene.rotate(this.axis_angle, 1, 0, 0);
@@ -48,12 +42,11 @@ export class MyPetal extends CGFobject {
         this.scene.scale(1,1,.3)
         this.scene.rotate(Math.PI/4, 0, 1, 0);
         this.scene.rotate(Math.PI/2, 1, 0, 0);
-        this.petal_appearance.apply();
-        this.triangle2.display();
+        this.scene.appearance_petal.apply();
+        this.triangle.display();
         
         
         this.scene.popMatrix();
-
         this.scene.pushMatrix();
         this.scene.translate(this.x, this.y, this.z);
         this.scene.rotate(this.axis_angle, 1, 0, 0);
@@ -63,10 +56,10 @@ export class MyPetal extends CGFobject {
         
         this.scene.scale(1,1,.3)
         this.scene.rotate(Math.PI/4, 0, 1, 0);
-        this.scene.rotate(Math.PI/2, 1, 0, 0);
+        this.scene.rotate(Math.PI/2, 1, 0, 0);  
         
-        this.petal_appearance.apply();
-        this.triangle1.display();
+        this.scene.appearance_petal.apply();
+        this.triangle.display();
         
 
         this.scene.popMatrix();

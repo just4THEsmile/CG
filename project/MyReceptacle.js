@@ -1,5 +1,5 @@
 import {CGFobject,CGFappearance} from '../lib/CGF.js';
-import { MySphere } from './MySphere.js';
+import { MySphere } from './Geometric/MySphere.js';
 
 export class MyReceptacle extends CGFobject {
 
@@ -19,18 +19,14 @@ export class MyReceptacle extends CGFobject {
     }
 
     initBuffers() {
-        this.receptacle_appearance = new CGFappearance(this.scene);
-        this.receptacle_appearance.setAmbient(this.color_heart[0], this.color_heart[1], this.color_heart[2], 1.0);
-        this.receptacle_appearance.setDiffuse(this.color_heart[0], this.color_heart[1], this.color_heart[2], 1.0);
-        this.receptacle_appearance.setSpecular(0.1, 0.1, 0.1, 1.0);
-        this.receptacle_appearance.setShininess(10.0);
     }
     display() {
+        this.scene.main_shader.setUniformsValues({color_of_text: this.color_heart});
         this.scene.pushMatrix();
         
         this.scene.translate(this.x, this.y, this.z);
         this.scene.scale(this.hearth_radius, this.hearth_radius, this.hearth_radius);
-        this.receptacle_appearance.apply();
+        this.scene.appearance_receptacle.apply();
         this.sphere.display();
         this.scene.popMatrix();
         

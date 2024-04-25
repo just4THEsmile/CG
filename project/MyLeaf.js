@@ -17,31 +17,22 @@ export class MyLeaf extends CGFobject {
         this.initMaterials();
     }
     initMaterials() {
-        this.stemMaterial = new CGFappearance(this.scene);
-        this.stemMaterial.setAmbient(this.color_stem[0], this.color_stem[1], this.color_stem[2], 1.0);
-        this.stemMaterial.setDiffuse(this.color_stem[0], this.color_stem[1], this.color_stem[2], 1.0);
-        this.stemMaterial.setSpecular(0.1, 0.1, 0.1, 1.0);
-        this.stemMaterial.setShininess(10.0);
-
-        this.leafMaterial = new CGFappearance(this.scene);
-        this.leafMaterial.setAmbient(this.color_leaf[0], this.color_leaf[1], this.color_leaf[2], 1.0);
-        this.leafMaterial.setDiffuse(this.color_leaf[0], this.color_leaf[1], this.color_leaf[2], 1.0);
-        this.leafMaterial.setSpecular(0.1, 0.1, 0.1, 1.0);
-        this.leafMaterial.setShininess(10.0);
     }
 
     display() {
-        
+        this.scene.main_shader.setUniformsValues({color_of_text: this.color_stem});
         // Draw the cylinder
         this.scene.pushMatrix();
-        this.stemMaterial.apply();
+        this.scene.appearance_stem.apply();
         this.scene.rotate(this.rotationAngle, 1, 0, 0);	
         this.cylinder.display();
         this.scene.popMatrix();
 
+        this.scene.main_shader.setUniformsValues({color_of_text: this.color_leaf});
         // Draw the first triangle
         this.scene.pushMatrix();
-        this.leafMaterial.apply();
+        this.scene.main_shader.setUniformsValues()
+        this.scene.appearance_leaf.apply();
         
         this.scene.rotate(this.rotationAngle, 1, 0, 0);
         this.scene.translate(0, this.height, 0);
@@ -55,7 +46,7 @@ export class MyLeaf extends CGFobject {
 
         // Draw the second triangle
         this.scene.pushMatrix();
-        this.leafMaterial.apply();
+        this.scene.appearance_leaf.apply();
         this.scene.rotate(this.rotationAngle, 1, 0, 0);
         this.scene.translate(0, this.height, 0);
         this.scene.rotate(Math.PI*0.1, 0, -1, 0);

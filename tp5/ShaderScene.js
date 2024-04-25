@@ -272,5 +272,7 @@ export class ShaderScene extends CGFscene {
 
 		// restore default shader (will be needed for drawing the axis in next frame)
 		this.setActiveShader(this.defaultShader);
+
+		console.log(this.selectedExampleShader);
 	}
 }

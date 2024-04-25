@@ -14,7 +14,7 @@ export class MyUnitCubeQuad extends CGFobject {
     display(){
         this.scene.pushMatrix();
         this.scene.translate(0,0,0.5);
-        this.textures[1].bind();
+        this.textures[4].bind();
         this.scene.gl.texParameteri(this.scene.gl.TEXTURE_2D, this.scene.gl.TEXTURE_MAG_FILTER, this.scene.gl.NEAREST);
         this.quad.display();
         this.scene.popMatrix();

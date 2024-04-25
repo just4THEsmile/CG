@@ -10,9 +10,10 @@ export class MyWing extends CGFobject {
 
     initMaterials(){
         this.wingMaterial = new CGFappearance(this.scene);
-        this.wingMaterial.setAmbient(1.0, 1.0, 1.0, 0.5); 
-        this.wingMaterial.setDiffuse(1.0, 1.0, 1.0, 0.5);
-        this.wingMaterial.setSpecular(1.0, 1.0, 1.0, 0.5);
+        this.wingMaterial.setAmbient(1.0, 1.0, 1.0, 0.1); 
+        this.wingMaterial.setDiffuse(1.0, 1.0, 1.0, 0.2);
+        this.wingMaterial.setSpecular(1.0, 1.0, 1.0, 0.3);
+        this.wingMaterial.setEmission(1.0, 1.0, 1.0, 0.1);
         this.wingMaterial.setShininess(10.0);
     }
 

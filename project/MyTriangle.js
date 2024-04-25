@@ -18,6 +18,12 @@ export class MyTriangle extends CGFobject {
             1 * this.size, -1 * this.size, 0, //2
         ];
 
+        this.texCoords = [
+            0, 0,
+            0, 1,
+            1, 1
+        ];
+
         // Counter-clockwise reference of vertices
         this.indices = [
             0, 1, 2, // Front face

@@ -56,8 +56,6 @@ export class MyRock extends CGFobject {
                     z += (Math.random() - 0.5) / 10;
                 }
 
-
-
                 let u = slice / this.slices;
                 let v = stack / this.stacks;
                 let new_u = 1 - u;

@@ -23,17 +23,6 @@ export class MyStem extends CGFobject {
     }
 
     initMaterials() {
-        this.stemMaterial = new CGFappearance(this.scene);
-        this.stemMaterial.setAmbient(this.color_stem[0], this.color_stem[1], this.color_stem[2], 1.0);
-        this.stemMaterial.setDiffuse(this.color_stem[0], this.color_stem[1], this.color_stem[2], 1.0);
-        this.stemMaterial.setSpecular(0.1, 0.1, 0.1, 1.0);
-        this.stemMaterial.setShininess(10.0);
-
-        this.leafMaterial = new CGFappearance(this.scene);
-        this.leafMaterial.setAmbient(this.color_leaf[0], this.color_leaf[1], this.color_leaf[2], 1.0);
-        this.leafMaterial.setDiffuse(this.color_leaf[0], this.color_leaf[1], this.color_leaf[2], 1.0);
-        this.leafMaterial.setSpecular(0.1, 0.1, 0.1, 1.0);
-        this.leafMaterial.setShininess(10.0);
     }
     display() {
         let z=0;
@@ -44,13 +33,15 @@ export class MyStem extends CGFobject {
         for (let i = 0; i < this.stem_size; i++) {
             rad_z += this.rand_stem_rot_z[i];
             rad_x += this.rand_stem_rot_x[i];
+            console.log(this.color_stem);
+            this.scene.main_shader.setUniformsValues({color_of_text: this.color_stem});
             this.scene.pushMatrix();
             this.scene.translate(x, y, z);
 
             this.scene.rotate(rad_x, 0, 0, 1);
             this.scene.rotate(rad_z, 1, 0, 0);
             this.scene.scale(1, this.rand_stem[i], 1);
-            this.stemMaterial.apply();
+            this.scene.appearance_stem.apply();
             this.stem.display();
             this.scene.popMatrix();
 
@@ -60,7 +51,7 @@ export class MyStem extends CGFobject {
             if (i < this.stem_size - 1) {
                 this.scene.pushMatrix();
                 this.scene.translate(x, y , z);
-                this.leafMaterial.apply();
+                this.scene.appearance_stem.apply();
                 this.leaf.scene.rotate(rad_x, 0, 0, 1);
                 this.leaf.scene.rotate(rad_z, 1, 0, 0);
                 this.scene.rotate(this.rand_rot[i],0,1,0);

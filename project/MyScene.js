@@ -7,6 +7,8 @@ import { MyRock } from "./MyRock.js";
 import { MyRockSet } from "./MyRockSet.js";
 import { MyRockPyramid } from "./MyRockPyramid.js";
 import { MyBee } from "./MyBee.js";
+import { MyPollen } from "./MyPollen.js"
+import { MyHive } from "./MyHive.js";
 
 /**
  * MyScene
@@ -15,6 +17,9 @@ import { MyBee } from "./MyBee.js";
 export class MyScene extends CGFscene {
   constructor() {
     super();
+    this.lastOKeyTime = 0;
+    this.OKeyDelay = 1000;
+
   }
   init(application) {
     super.init(application);
@@ -32,6 +37,14 @@ export class MyScene extends CGFscene {
     this.gl.enable(this.gl.DEPTH_TEST);
     this.gl.enable(this.gl.CULL_FACE);
     this.gl.depthFunc(this.gl.LEQUAL);
+    this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
+    this.gl.enable(this.gl.BLEND);
+    this.gl.frontFace(this.gl.CWW);
+
+
+    //Initialize scene parameters
+    this.speedFactor = 1; 
+    this.scaleFactor = 1;
 
     //Initialize scene objects
     this.axis = new CGFaxis(this);
@@ -42,7 +55,10 @@ export class MyScene extends CGFscene {
     this.rock = new MyRock(this, 32, 32, false);
     this.rockset = new MyRockSet(this, 5, 32, 32);
     this.rockpyramid = new MyRockPyramid(this, 5, 32, 32);
-    this.bee = new MyBee(this, 0, 0, 0);
+    this.pollens = [new MyPollen(this, 32, 32, -32,5,-87)]; 
+    this.hive = new MyHive(this, -20, -40, 40);
+    this.bee = new MyBee(this, 0, 0, 0, this.pollens, this.hive);
+
 
     //Objects connected to MyInterface
     this.displayAxis = true;
@@ -56,7 +72,10 @@ export class MyScene extends CGFscene {
     this.displayRockSet = false;
     this.displayRockPyramid = false;
     this.displayBee = true;
-    this.scaleFactor = 1;
+    this.displayPollen = true;
+    this.displayHive = true;
+    this.useBeeCamera = false;
+
 
     //Textures
     this.enableTextures(true);
@@ -64,6 +83,21 @@ export class MyScene extends CGFscene {
     this.texture_earth = new CGFtexture(this, "images/earth.jpg");
     this.texture_rock = new CGFtexture(this, "images/rock_texture.jpg");
     this.texture_bee = new CGFtexture(this, "images/bee_texture.jpg");
+    this.texture_bee_antennae = new CGFtexture(this, "images/bee_antennae.jpg");
+    this.texture_bee_leg = new CGFtexture(this, "images/bee_leg.jpg");
+    this.texture_bee_eye = new CGFtexture(this, "images/bee_eye.png");
+    this.texture_pollen = new CGFtexture(this, "images/pollen.jpg");
+    this.texture_wood = new CGFtexture(this, "images/wood.jpg");
+    this.texture_beehive = new CGFtexture(this, "images/beehive.jpg");
+    this.texture_stem = new CGFtexture(this, "images/stem.jpg");
+    this.texture_petal = new CGFtexture(this, "images/petal.jpg");
+    this.texture_leaf = new CGFtexture(this, "images/leaf.jpg");
+    this.texture_receptacle = new CGFtexture(this, "images/receptacle.jpg");
+
+
+
+    //Shaders
+    this.main_shader = new CGFshader(this.gl, "shaders/texture1.vert", "shaders/gray.frag")
     
 
     //Appearances
@@ -71,7 +105,6 @@ export class MyScene extends CGFscene {
     this.appearance_earth.setTexture(this.texture_earth);
     this.appearance_earth.setTextureWrap('REPEAT', 'REPEAT');
   
-
     this.appearance_terrain = new CGFappearance(this);
     this.appearance_terrain.setTexture(this.texture_terrain);
     this.appearance_terrain.setTextureWrap('REPEAT', 'REPEAT');
@@ -84,6 +117,51 @@ export class MyScene extends CGFscene {
     this.appearance_bee.setTexture(this.texture_bee);
     this.appearance_bee.setTextureWrap('CLAMP_TO_EDGE', 'CLAMP_TO_EDGE');
 
+    this.appearance_bee_antennae = new CGFappearance(this);
+    this.appearance_bee_antennae.setTexture(this.texture_bee_antennae);
+    this.appearance_bee_antennae.setTextureWrap('REPEAT', 'REAPEAT');
+
+    this.appearance_bee_leg = new CGFappearance(this);
+    this.appearance_bee_leg.setTexture(this.texture_bee_leg);
+    this.appearance_bee_leg.setTextureWrap('REPEAT', 'REPEAT');
+
+    this.appearance_bee_eye = new CGFappearance(this);
+    this.appearance_bee_eye.setTexture(this.texture_bee_eye);
+    this.appearance_bee_eye.setTextureWrap('REPEAT', 'REPEAT');
+
+    this.appearance_pollen = new CGFappearance(this);
+    this.appearance_pollen.setTexture(this.texture_pollen);
+    this.appearance_pollen.setTextureWrap('REPEAT', 'REPEAT');
+
+    this.appearance_wood = new CGFappearance(this);
+    this.appearance_wood.setTexture(this.texture_wood);
+    this.appearance_wood.setTextureWrap('REPEAT', 'REPEAT');
+
+    this.appearance_beehive = new CGFappearance(this);
+    this.appearance_beehive.setTexture(this.texture_beehive);
+    this.appearance_beehive.setTextureWrap('REPEAT', 'REPEAT');
+
+    this.appearance_stem = new CGFappearance(this);
+    this.appearance_stem.setTexture(this.texture_stem);
+    this.appearance_stem.setTextureWrap('REPEAT', 'REPEAT');
+
+    this.appearance_petal = new CGFappearance(this);
+    this.appearance_petal.setTexture(this.texture_petal);
+    this.appearance_petal.setTextureWrap('CLAMP_TO_EDGE', 'CLAMP_TO_EDGE');
+
+    this.appearance_leaf = new CGFappearance(this);
+    this.appearance_leaf.setTexture(this.texture_leaf);
+    this.appearance_leaf.setTextureWrap('REPEAT', 'REPEAT');
+
+    this.appearance_receptacle = new CGFappearance(this);
+    this.appearance_receptacle.setTexture(this.texture_receptacle);
+    this.appearance_receptacle.setTextureWrap('REPEAT', 'REPEAT');
+
+    
+
+
+
+
 
   }
   initLights() {
@@ -91,6 +169,10 @@ export class MyScene extends CGFscene {
     this.lights[0].setDiffuse(1.0, 1.0, 1.0, 1.0);
     this.lights[0].enable();
     this.lights[0].update();
+    this.lights[1].setPosition(16, 7, 10, 1);
+    this.lights[1].setDiffuse(1.0, 1.0, 1.0, 1.0);
+    this.lights[1].enable();
+    this.lights[1].update();
   }
   initCameras() {
     this.camera = new CGFcamera(
@@ -100,6 +182,14 @@ export class MyScene extends CGFscene {
       vec3.fromValues(50, 10, 15),
       vec3.fromValues(0, 0, 0)
     );
+    this.beeCamera = new CGFcamera(
+      0.4, 
+      0.1, 
+      500, 
+      vec3.fromValues(0, 0, 0), 
+      vec3.fromValues(0, 0, 0)
+    );
+    this.defaultCamera = this.camera;
   }
   setDefaultAppearance() {
     this.setAmbient(0.2, 0.4, 0.8, 1.0);
@@ -108,6 +198,13 @@ export class MyScene extends CGFscene {
     this.setShininess(10.0);
   }
   display() {
+    this.setActiveShader(this.main_shader);
+    
+    if (this.useBeeCamera) {
+      this.camera = this.beeCamera;
+    } else {
+      this.camera = this.defaultCamera;
+    }
     // ---- BEGIN Background, camera and axis setup
     // Clear image and depth buffer everytime we update the scene
     this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
@@ -147,7 +244,7 @@ export class MyScene extends CGFscene {
 
       this.pushMatrix();
       this.appearance_terrain.apply();
-      this.translate(0,-100,0);
+      this.translate(0,-20,0);
       this.scale(400,400,400);
       this.rotate(-Math.PI/2.0,1,0,0);
       this.plane.display();
@@ -164,7 +261,6 @@ export class MyScene extends CGFscene {
 
     }
 
-
     if(this.displayRockSet){
 
       this.rockset.display();
@@ -175,6 +271,33 @@ export class MyScene extends CGFscene {
       }
     }
 
+    if(this.displayRockPyramid){
+        this.rockpyramid.display();
+        if(this.displayNormals){
+          for(let child of this.rockpyramid.rocks){
+            child.enableNormalViz();
+          }
+        }
+    }  
+
+    if(this.displayPollen){
+      for(let polen of this.pollens){
+        polen.display();
+      }
+    }
+
+    if(this.displayHive){
+      this.hive.display();
+    }
+    if (this.displayFlower) { 
+      this.flower.display();
+      this.main_shader.setUniformsValues({color_of_text: [1, 1, 1]});
+    } 
+    if(this.displayBee){
+      this.bee.display();
+    }
+
+    
     if(!this.displayNormals){
       this.sphere.disableNormalViz();
       this.plane.disableNormalViz();
@@ -187,43 +310,117 @@ export class MyScene extends CGFscene {
       }
     }
 
-    if(this.displayRockPyramid){
-        this.rockpyramid.display();
-        if(this.displayNormals){
-          for(let child of this.rockpyramid.rocks){
-            child.enableNormalViz();
-          }
-        }
-      } 
-      if (this.displayFlower) { 
-        this.flower.display();
-      } 
-  
-    if(this.displayBee){
-      this.bee.display();
-    }
+
+  this.setActiveShader(this.defaultShader);
 
   }
   update(t){
 
     this.bee.update(t);
+    this.checkKeys();
+
+    let beePosition = this.bee.getPosition();
+    let beeOrientation = this.bee.getOrientation();
+    
+    let distanceBehind = 10;
+    let distanceAbove = 5;
+    
+    this.beeCamera.setPosition(vec3.fromValues(
+      beePosition.x - distanceBehind * Math.sin(beeOrientation),
+      beePosition.y + distanceAbove,
+      beePosition.z - distanceBehind * Math.cos(beeOrientation)
+    ));
+
+    this.beeCamera.setTarget(vec3.fromValues(
+        beePosition.x + Math.sin(beeOrientation),
+        beePosition.y,
+        beePosition.z + Math.cos(beeOrientation)
+    ));
+
+
   }
   checkKeys(){
-    var text="Keys pressed: ";
+    var text="Key pressed: ";
     var keysPressed=false;
 
     if(this.gui.isKeyPressed("KeyW")){
+      
+      this.bee.accelerate(0.001);
+      
       text+=" W ";
-      keys
+      keysPressed = true;
     }
 
     if(this.gui.isKeyPressed("KeyS")){
+      
+      this.bee.accelerate(-0.001);
+      
       text+=" S ";
       keysPressed=true;
     }
 
+    if(this.gui.isKeyPressed("KeyA")){
+      
+      this.bee.turn(0.1);
+      
+      text+=" A ";
+      keysPressed=true;
+    }
+
+    if(this.gui.isKeyPressed("KeyF")){
+      
+    }
+
+    if(this.gui.isKeyPressed("KeyD")){
+      
+      this.bee.turn(-0.1);
+      
+      text+=" D ";
+      keysPressed=true;
+    }
+
+    if(this.gui.isKeyPressed("KeyR")){
+      
+      this.bee.reset();
+      
+      text+=" R ";
+      keysPressed=true;
+    }
+
+    if(this.gui.isKeyPressed("KeyF")){
+
+      this.bee.moveY(0.25);
+
+      text+=" F ";
+      keysPressed=true;
+    }
+
+    if(this.gui.isKeyPressed("KeyP")){
+
+      this.bee.moveY(-0.25);
+
+      text+=" P ";
+      keysPressed=true;
+    }
+
+    if(this.gui.isKeyPressed("KeyO")){
+      
+      let currentTime = Date.now();
+
+      if (currentTime - this.lastOKeyTime > this.OKeyDelay) {
+        this.bee.intelligence();
+
+        text+=" O ";
+        keysPressed=true;
+
+        this.lastOKeyTime = currentTime;
+      }
+    
+    }
+
     if(keysPressed){
       console.log(text);
+
     }
 
     // ---- END Primitive drawing section
