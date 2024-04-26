@@ -10,19 +10,12 @@ export class MyHive extends CGFobject{
         this.y = y;
         this.z = z;
         
-        this.bottom = new MyCube(scene);
-        this.top = new MyCube(scene);
-        this.front = new MyCube(scene);
-        this.back = new MyCube(scene);
-        this.left = new MyCube(scene);
-        this.right = new MyCube(scene);
+        this.wall = new MyCube(scene);
+
 
         this.pollens = [];
 
-        this.frames = [];
-        for(let i = 0; i < 12; i++){
-            this.frames.push(new MyCube(scene));
-        }
+
 
         this.initMaterials();
         
@@ -33,7 +26,7 @@ export class MyHive extends CGFobject{
         this.material.setAmbient(0.45, 0.25, 0.15, 1); 
         this.material.setDiffuse(0.45, 0.25, 0.15, 1); 
         this.material.setSpecular(0.5, 0.5, 0.5, 1); 
-        this.material.setShininess(10.0);
+        this.material.setShininess(1.0);
 
     }
 
@@ -46,7 +39,7 @@ export class MyHive extends CGFobject{
         this.scene.pushMatrix();
         this.scene.appearance_wood.apply();
         this.scene.scale(15,1,10);
-        this.bottom.display();
+        this.wall.display();
         this.scene.popMatrix();
 
         //Front
@@ -54,7 +47,7 @@ export class MyHive extends CGFobject{
         this.scene.appearance_wood.apply();
         this.scene.translate(0,10,9);
         this.scene.scale(15,9,1);
-        this.front.display();
+        this.wall.display();
         this.scene.popMatrix();
 
         //Back
@@ -62,7 +55,7 @@ export class MyHive extends CGFobject{
         this.scene.appearance_wood.apply();
         this.scene.translate(0,10,-9);
         this.scene.scale(15,9,1);
-        this.back.display();
+        this.wall.display();
         this.scene.popMatrix();
         
         //Left
@@ -70,7 +63,7 @@ export class MyHive extends CGFobject{
         this.scene.appearance_wood.apply();
         this.scene.translate(-14,10,0);
         this.scene.scale(1,9,8);
-        this.left.display();
+        this.wall.display();
         this.scene.popMatrix();
 
         //Right
@@ -78,11 +71,11 @@ export class MyHive extends CGFobject{
         this.scene.appearance_wood.apply();
         this.scene.translate(14,10,0);
         this.scene.scale(1,9,8);
-        this.right.display();
+        this.wall.display();
         this.scene.popMatrix();
 
         //Frames & Handles
-        for (let i = 0; i < this.frames.length; i++) {
+        for (let i = 0; i < 12; i++) {
 
             //Frames
             this.scene.pushMatrix();
@@ -90,7 +83,7 @@ export class MyHive extends CGFobject{
             this.scene.translate(i*2 - 11, 10, 0); 
             this.scene.rotate(Math.PI/2, 0, 1, 0);
             this.scene.scale(9, 8, 0.30);
-            this.frames[i].display();
+            this.wall.display();
             this.scene.popMatrix();
 
             //Handles
@@ -99,7 +92,7 @@ export class MyHive extends CGFobject{
             this.scene.translate(i*2 - 11, 18.5, 0); 
             this.scene.rotate(Math.PI/2, 0, 1, 0);
             this.scene.scale(8, 0.5, 0.35);
-            this.frames[i].display();
+            this.wall.display();
             this.scene.popMatrix();
 
         }
@@ -110,8 +103,37 @@ export class MyHive extends CGFobject{
         this.scene.translate(0,28.15,5.8);
         this.scene.rotate(60*Math.PI/180, 1, 0, 0);
         this.scene.scale(15,1,10);
-        this.top.display();
+        this.wall.display();
         this.scene.popMatrix();
+
+        //Support #1
+        this.scene.pushMatrix();
+        this.scene.appearance_wood.apply();
+        this.scene.translate(-14,-2.01,9);
+        this.wall.display();
+        this.scene.popMatrix();
+
+        //Support #2
+        this.scene.pushMatrix();
+        this.scene.appearance_wood.apply();
+        this.scene.translate(14,-2.01,9);
+        this.wall.display();
+        this.scene.popMatrix();
+
+        //Support #3
+        this.scene.pushMatrix();
+        this.scene.appearance_wood.apply();
+        this.scene.translate(-14,-2.01,-9);
+        this.wall.display();
+        this.scene.popMatrix();
+
+        //Support #4
+        this.scene.pushMatrix();
+        this.scene.appearance_wood.apply();
+        this.scene.translate(14,-2.01,-9);
+        this.wall.display();
+        this.scene.popMatrix();
+        
 
         //Display Pollens
         for (let i = 0; i < this.pollens.length; i++) {
