@@ -221,7 +221,7 @@ export class MyBee extends CGFobject{
     turn(v){
         this.orientation += v * this.speedFactor;
 
-        let speed = this.velocity[0] * Math.sin(this.orientation) + this.velocity[2] * Math.cos(this.orientation);
+        let speed = Math.sqrt(this.velocity[0]*this.velocity[0] + this.velocity[1]*this.velocity[1] + this.velocity[2]*this.velocity[2]);
 
         this.velocity[0] = speed * Math.sin(this.orientation);
         this.velocity[2] = speed * Math.cos(this.orientation);
