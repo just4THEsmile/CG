@@ -23,11 +23,9 @@ export class MyPollen extends MySphere {
     }
 
     display() {
-
         this.scene.pushMatrix();
         this.scene.translate(this.x, this.y, this.z);
-  
-        
+
         this.scene.pushMatrix();
         this.scene.appearance_pollen.apply();
         this.scene.scale(1.2, 1, 1.2);
@@ -37,11 +35,10 @@ export class MyPollen extends MySphere {
         this.scene.pushMatrix();
         this.scene.appearance_pollen.apply();
         this.scene.translate(0, 0.5, 0);
-        this.scene.scale(1.19, 1.4, 1.19); 
+        this.scene.scale(1.2, 1.4, 1.2);
         super.display();
         this.scene.popMatrix();
 
         this.scene.popMatrix();
-        
     }
 }
