@@ -32,14 +32,14 @@ export class MyPollen extends MySphere {
 
         this.scene.pushMatrix();
         this.scene.appearance_pollen.apply();
-        this.scene.scale(0.3, 0.25, 0.3);
+        this.scene.scale(0.15, 0.125, 0.15);
         super.display();
         this.scene.popMatrix();
 
         this.scene.pushMatrix();
         this.scene.appearance_pollen.apply();
-        this.scene.translate(0, 0.125, 0);
-        this.scene.scale(0.3, 0.35, 0.3 );
+        this.scene.translate(0, 0.0625, 0);
+        this.scene.scale(0.15, 0.175, 0.15 );
         super.display();
         this.scene.popMatrix();
 

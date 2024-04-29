@@ -58,7 +58,7 @@ export class MyScene extends CGFscene {
     this.pollens = [];
     for(let flower of this.flower){
         let pollen_x = flower.x + flower.x_pos;
-        let pollen_y = flower.y + flower.y_pos + 0.05;  
+        let pollen_y = flower.y + flower.y_pos + 0.2;  
         let pollen_z = flower.z + flower.z_pos;
         this.pollens.push(new MyPollen(this, 32, 32, pollen_x, pollen_y, pollen_z));
     }

@@ -93,7 +93,7 @@ export class MyBee extends CGFobject{
 
         //Check if Bee is near the Pollen
         if(this.checkPollen()){
-            this.rotate_legs_pollen = 20;
+            this.rotate_legs_pollen = 45;
         }
         else{
             this.rotate_legs_pollen = 0;
@@ -104,7 +104,7 @@ export class MyBee extends CGFobject{
             this.rotate_legs_pollen = 0;
         }
         else if(this.current_pollen != null){
-            this.rotate_legs_pollen = 20;
+            this.rotate_legs_pollen = 45;
         }
 
         //Bee AI
@@ -264,6 +264,7 @@ export class MyBee extends CGFobject{
         this.scene.scale(this.scaleFactor,this.scaleFactor,this.scaleFactor);
         this.scene.translate(this.x,this.y,this.z);
         this.scene.rotate(this.orientation,0,1,0);
+        this.scene.scale(0.5,0.5,0.5);
 
         //Display Head
         this.scene.pushMatrix();
@@ -376,7 +377,7 @@ export class MyBee extends CGFobject{
             this.new_pollen = new MyPollen(this.scene, 32, 32, 0, 0, 0);
 
             this.scene.pushMatrix();
-            this.scene.translate(0,-2.8,-1.5);
+            this.scene.translate(0,-1.5,-1);
             this.scene.rotate(-30*(Math.PI/180),1,0,0);
             this.scene.rotate(Math.PI / 2, 1, 0, 0);
             this.new_pollen.display();
