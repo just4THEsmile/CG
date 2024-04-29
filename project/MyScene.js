@@ -51,11 +51,17 @@ export class MyScene extends CGFscene {
     this.plane = new MyPlane(this,30);
     this.sphere = new MySphere(this, 32, 32, false);
     this.panorama = new MyPanorama(this, new CGFtexture(this, "images/city_panorama.jpg"));
-    this.flower= new MyFlower(this, 1, 8, [1, 0, 0], 0.3, [1, 1, 0], 0.07, 5, [0, 1, 0], [1, 1, 0]);
+    this.flower= [new MyFlower(this,5,5,5, 1, 8, [1, 0, 0], 0.3, [1, 1, 0], 0.07, 5, [0, 1, 0], [1, 1, 0])];
     this.rock = new MyRock(this, 32, 32, false);
     this.rockset = new MyRockSet(this, 5, 32, 32);
     this.rockpyramid = new MyRockPyramid(this, 5, 32, 32);
-    this.pollens = [new MyPollen(this, 32, 32, -10,-10,-27), new MyPollen(this,32,32,10,-10,-27)]; 
+    this.pollens = [];
+    for(let flower of this.flower){
+        let pollen_x = flower.x + flower.x_pos;
+        let pollen_y = flower.y + flower.y_pos + 0.05;  
+        let pollen_z = flower.z + flower.z_pos;
+        this.pollens.push(new MyPollen(this, 32, 32, pollen_x, pollen_y, pollen_z));
+    }
     this.hive = new MyHive(this, -20, -40, 40);
     this.bee = new MyBee(this, 0, 0, 0, this.pollens, this.hive);
 
@@ -298,7 +304,9 @@ export class MyScene extends CGFscene {
     }
     if (this.displayFlower) { 
       this.setActiveShader(this.main_shader);
-      this.flower.display();
+      for(let flower of this.flower){
+        flower.display();
+      }
       this.setActiveShader(this.defaultShader);
     } 
     if(this.displayBee){
@@ -375,10 +383,6 @@ export class MyScene extends CGFscene {
       keysPressed=true;
     }
 
-    if(this.gui.isKeyPressed("KeyF")){
-      
-    }
-
     if(this.gui.isKeyPressed("KeyD")){
       
       this.bee.turn(-0.1);
@@ -397,7 +401,7 @@ export class MyScene extends CGFscene {
 
     if(this.gui.isKeyPressed("KeyF")){
 
-      this.bee.moveY(0.25);
+      this.bee.moveY(-0.25);
 
       text+=" F ";
       keysPressed=true;
@@ -405,7 +409,7 @@ export class MyScene extends CGFscene {
 
     if(this.gui.isKeyPressed("KeyP")){
 
-      this.bee.moveY(-0.25);
+      this.bee.moveY(0.25);
 
       text+=" P ";
       keysPressed=true;

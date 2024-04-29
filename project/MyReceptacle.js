@@ -23,7 +23,6 @@ export class MyReceptacle extends CGFobject {
     display() {
         this.scene.main_shader.setUniformsValues({color_of_text: this.color_heart});
         this.scene.pushMatrix();
-        
         this.scene.translate(this.x, this.y, this.z);
         this.scene.scale(this.hearth_radius, this.hearth_radius, this.hearth_radius);
         this.scene.appearance_receptacle.apply();
