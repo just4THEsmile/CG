@@ -364,7 +364,8 @@ export class MyBee extends CGFobject{
 
         //Check if carrying a pollen
         if(this.current_pollen != null){
-
+            this.scene.setActiveShader(this.scene.main_shader);
+            this.scene.main_shader.setUniformsValues({color_of_text: [1, 0.5, 0]});
             this.new_pollen = new MyPollen(this.scene, 32, 32, 0, 0, 0);
 
             this.scene.pushMatrix();
@@ -373,6 +374,7 @@ export class MyBee extends CGFobject{
             this.scene.rotate(Math.PI / 2, 1, 0, 0);
             this.new_pollen.display();
             this.scene.popMatrix();
+            this.scene.setActiveShader(this.scene.defaultShader);
         }
 
         //Display Front Left Wing

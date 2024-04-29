@@ -23,7 +23,7 @@ export class MyPollen extends MySphere {
     }
 
     display() {
-
+        this.scene.main_shader.setUniformsValues({color_of_text: [1, 0.5, 0]})
         this.scene.pushMatrix();
         this.scene.translate(this.x, this.y, this.z);
   

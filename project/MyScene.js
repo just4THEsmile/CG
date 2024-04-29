@@ -198,7 +198,7 @@ export class MyScene extends CGFscene {
     this.setShininess(10.0);
   }
   display() {
-    this.setActiveShader(this.main_shader);
+    
     
     if (this.useBeeCamera) {
       this.camera = this.beeCamera;
@@ -282,7 +282,9 @@ export class MyScene extends CGFscene {
 
     if(this.displayPollen){
       for(let polen of this.pollens){
+        this.setActiveShader(this.main_shader);
         polen.display();
+        this.setActiveShader(this.defaultShader);
       }
     }
 
@@ -290,8 +292,9 @@ export class MyScene extends CGFscene {
       this.hive.display();
     }
     if (this.displayFlower) { 
+      this.setActiveShader(this.main_shader);
       this.flower.display();
-      this.main_shader.setUniformsValues({color_of_text: [1, 1, 1]});
+      this.setActiveShader(this.defaultShader);
     } 
     if(this.displayBee){
       this.bee.display();
