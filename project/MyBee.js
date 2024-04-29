@@ -40,6 +40,7 @@ export class MyBee extends CGFobject{
         this.pollens = pollens;
         this.rotate_legs_pollen = 0;
         this.hive = hive;
+
         
 
     }
@@ -55,6 +56,7 @@ export class MyBee extends CGFobject{
             return;
         }
         console.log("Bee AI Activated")
+        this.initialPosition = { x: this.x, y: this.y, z: this.z };
         if(this.current_pollen == null){
             console.log("Bee AI Going to Pollen");
             this.target = this.findNearestPollen();
@@ -113,6 +115,47 @@ export class MyBee extends CGFobject{
         this.lastUpdateTime = t;
     }
 
+    moveTowards(target,t){
+
+        this.offset = 0;
+        if(this.target == this.hive){
+            this.offset = 25;
+        }
+
+        let dx = target.x - this.x;
+        let dy = target.y - this.y + this.offset;
+        let dz = target.z - this.z;
+    
+        let distance = Math.sqrt(dx*dx + dy*dy + dz*dz);
+
+        // Calculate a factor based on distance for parabolic movement
+        let a = 0.05;
+        let factor = a * Math.pow(distance / 2, 2);  
+
+
+        if (distance > 1) {
+            this.velocity[0] = ((dx / distance)/100) * this.speedFactor;
+            this.velocity[1] = (((dy + factor) / distance) / 100) * this.speedFactor;
+            this.velocity[2] = ((dz / distance)/100) * this.speedFactor;
+
+        } else {
+            this.velocity[0] = 0;
+            this.velocity[1] = 0;
+            this.velocity[2] = 0;
+            this.target = null;
+            this.bee_AI = false;
+        }
+
+        //Bee Orientation
+        let targetOrientation = Math.atan2(dx, dz);
+        this.orientation = this.OrientationAngle(this.orientation, targetOrientation, 0.05);
+    }
+
+    OrientationAngle(a, b, t) {
+        let delta = ((b - a + Math.PI) % (2 * Math.PI)) - Math.PI;
+        return a + delta * t;
+    }
+
     findNearestPollen(){
 
         let nearestPollen = null;
@@ -132,42 +175,6 @@ export class MyBee extends CGFobject{
         }
 
         return nearestPollen;
-    }
-
-    moveTowards(target,t){
-
-        this.offset = 0;
-        if(this.target == this.hive){
-            this.offset = 25;
-        }
-
-        let dx = target.x - this.x;
-        let dy = target.y - this.y + this.offset;
-        let dz = target.z - this.z;
-    
-        let distance = Math.sqrt(dx*dx + dy*dy + dz*dz);
-
-        if (distance > 1) {
-            this.velocity[0] = ((dx / distance)/100) * this.speedFactor;
-            this.velocity[1] = ((dy / distance)/100) * this.speedFactor;
-            this.velocity[2] = ((dz / distance)/100) * this.speedFactor;
-
-        } else {
-            this.velocity[0] = 0;
-            this.velocity[1] = 0;
-            this.velocity[2] = 0;
-            this.target = null;
-            this.bee_AI = false;
-        }
-
-        //Bee Orientation
-        let targetOrientation = Math.atan2(dx, dz);
-        this.orientation = this.OrientationAngle(this.orientation, targetOrientation, 0.05);
-    }
-
-    OrientationAngle(a, b, t) {
-        let delta = ((b - a + Math.PI) % (2 * Math.PI)) - Math.PI;
-        return a + delta * t;
     }
 
     checkHive() {
@@ -214,7 +221,7 @@ export class MyBee extends CGFobject{
     turn(v){
         this.orientation += v * this.speedFactor;
 
-        let speed = this.velocity[0] * Math.sin(this.orientation) + this.velocity[2] * Math.cos(this.orientation);
+        let speed = Math.sqrt(this.velocity[0]*this.velocity[0] + this.velocity[1]*this.velocity[1] + this.velocity[2]*this.velocity[2]);
 
         this.velocity[0] = speed * Math.sin(this.orientation);
         this.velocity[2] = speed * Math.cos(this.orientation);

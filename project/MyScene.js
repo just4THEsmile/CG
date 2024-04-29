@@ -55,7 +55,7 @@ export class MyScene extends CGFscene {
     this.rock = new MyRock(this, 32, 32, false);
     this.rockset = new MyRockSet(this, 5, 32, 32);
     this.rockpyramid = new MyRockPyramid(this, 5, 32, 32);
-    this.pollens = [new MyPollen(this, 32, 32, -10,-10,-27)]; 
+    this.pollens = [new MyPollen(this, 32, 32, -10,-10,-27), new MyPollen(this,32,32,10,-10,-27)]; 
     this.hive = new MyHive(this, -20, -40, 40);
     this.bee = new MyBee(this, 0, 0, 0, this.pollens, this.hive);
 
@@ -94,11 +94,11 @@ export class MyScene extends CGFscene {
     this.texture_leaf = new CGFtexture(this, "images/leaf.jpg");
     this.texture_receptacle = new CGFtexture(this, "images/receptacle.jpg");
 
-
-
     //Shaders
     this.main_shader = new CGFshader(this.gl, "shaders/texture1.vert", "shaders/gray.frag")
     
+    this.texture_wing = new CGFtexture(this, "images/wing.jpg");
+
 
     //Appearances
     this.appearance_earth = new CGFappearance(this);
@@ -157,9 +157,14 @@ export class MyScene extends CGFscene {
     this.appearance_receptacle.setTexture(this.texture_receptacle);
     this.appearance_receptacle.setTextureWrap('REPEAT', 'REPEAT');
 
-    
-
-
+    this.appearance_wing = new CGFappearance(this);
+    this.appearance_wing.setTexture(this.texture_wing);
+    this.appearance_wing.setTextureWrap('REPEAT', 'REPEAT');
+    this.appearance_wing.setAmbient(1.0, 1.0, 1.0, 0.1); 
+    this.appearance_wing.setDiffuse(1.0, 1.0, 1.0, 0.2);
+    this.appearance_wing.setSpecular(1.0, 1.0, 1.0, 0.3);
+    this.appearance_wing.setEmission(1.0, 1.0, 1.0, 0.1);
+    this.appearance_wing.setShininess(10.0);
 
 
 

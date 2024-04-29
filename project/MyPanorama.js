@@ -24,7 +24,7 @@ export class MyPanorama extends CGFobject {
         let cameraPosition = this.scene.camera.position;
         this.scene.translate(cameraPosition[0], cameraPosition[1], cameraPosition[2]);
         
-        this.scene.scale(200,200,200);
+        this.scene.scale(400,400,400);
         this.material.apply();
         this.sphere.display();
         this.scene.popMatrix();
