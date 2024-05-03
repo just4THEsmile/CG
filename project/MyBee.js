@@ -210,7 +210,10 @@ export class MyBee extends CGFobject{
                 console.log("Pollen Found");
                 console.log(this.current_pollen);
                 this.pollens.splice(i,1);
-
+                
+                this.velocity = [0,0,0];
+                this.scene.isMovingUp = false;
+                this.scene.isMovingDown = false;
                 
                 return false;
             }

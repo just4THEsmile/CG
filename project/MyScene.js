@@ -18,7 +18,12 @@ export class MyScene extends CGFscene {
   constructor() {
     super();
     this.lastOKeyTime = 0;
-    this.OKeyDelay = 1000;
+    this.lastFKeyTime = 0;
+    this.lastPKeyTime = 0;
+    this.OKeyDelay = 300;
+
+    this.isMovingUp = false;
+    this.isMovingDown = false;
 
   }
   init(application) {
@@ -353,6 +358,14 @@ export class MyScene extends CGFscene {
         beePosition.z + Math.cos(beeOrientation)
     ));
 
+    if(this.isMovingDown){
+      this.bee.moveY(-0.25);
+    }
+
+    if(this.isMovingUp){
+      this.bee.moveY(0.25);
+    }
+
 
   }
   checkKeys(){
@@ -401,18 +414,34 @@ export class MyScene extends CGFscene {
 
     if(this.gui.isKeyPressed("KeyF")){
 
-      this.bee.moveY(-0.25);
+      let currentTime = Date.now();
 
-      text+=" F ";
-      keysPressed=true;
+      if (currentTime - this.lastFKeyTime > this.OKeyDelay) {
+        
+        this.isMovingDown = !this.isMovingDown;
+        this.isMovingUp = false;
+        
+        text+=" F ";
+        keysPressed=true;
+      }
+
+      this.lastFKeyTime = currentTime;
     }
 
     if(this.gui.isKeyPressed("KeyP")){
 
-      this.bee.moveY(0.25);
+      let currentTime = Date.now();
 
-      text+=" P ";
-      keysPressed=true;
+      if (currentTime - this.lastPKeyTime > this.OKeyDelay) {
+
+        this.isMovingUp = !this.isMovingUp;
+        this.isMovingDown = false;
+
+        text+=" P ";
+        keysPressed=true;
+      }
+
+      this.lastPKeyTime = currentTime;
     }
 
     if(this.gui.isKeyPressed("KeyO")){
