@@ -71,6 +71,8 @@ export class MyScene extends CGFscene {
     this.bee = new MyBee(this, 0, 0, 0, this.pollens, this.hive);
 
 
+
+
     //Objects connected to MyInterface
     this.displayAxis = true;
     this.displayNormals = false;
@@ -80,12 +82,18 @@ export class MyScene extends CGFscene {
     this.displayPanorama = true;
     this.displayRock = false;
     this.displayRockSet = true;
+    this.numRocks = 10;
+    this.numRocksOld = this.numRocks;
     this.displayRockPyramid = true;
+    this.rockPyramidHeight = 5;
+    this.rockPyramidHeightOld = this.rockPyramidHeight;
     this.displayBee = true;
     this.displayPollen = true;
     this.displayHive = true;
     this.useBeeCamera = false;
 
+    this.updateRockSet();
+    this.updateRockPyramid();
 
     //Textures
     this.enableTextures(true);
@@ -211,6 +219,13 @@ export class MyScene extends CGFscene {
     this.setDiffuse(0.2, 0.4, 0.8, 1.0);
     this.setSpecular(0.2, 0.4, 0.8, 1.0);
     this.setShininess(10.0);
+  }
+  updateRockSet() {
+    this.rockset = new MyRockSet(this, this.numRocks, 32, 32);
+  }
+
+  updateRockPyramid() {
+    this.rockpyramid = new MyRockPyramid(this, this.rockPyramidHeight, 32, 32);
   }
   display() {
     
@@ -363,6 +378,16 @@ export class MyScene extends CGFscene {
 
     if(this.isMovingUp){
       this.bee.moveY(0.25);
+    }
+
+    if(this.numRocksOld != this.numRocks){
+      this.updateRockSet();
+      this.numRocksOld = this.numRocks;
+    }
+
+    if(this.rockPyramidHeightOld != this.rockPyramidHeight){
+      this.updateRockPyramid();
+      this.rockPyramidHeightOld = this.rockPyramidHeight;
     }
 
 
