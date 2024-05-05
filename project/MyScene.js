@@ -56,9 +56,9 @@ export class MyScene extends CGFscene {
     this.plane = new MyPlane(this,30);
     this.sphere = new MySphere(this, 32, 32, false);
     this.panorama = new MyPanorama(this, new CGFtexture(this, "images/city_panorama.jpg"));
-    this.flower= [new MyFlower(this,5,5,5, 1, 8, [1, 0, 0], 0.3, [1, 1, 0], 0.07, 5, [0, 1, 0], [1, 1, 0])];
+    this.flower= [new MyFlower(this,-60,-41,-40, 1, 8, [1, 0, 0], 0.3, [1, 1, 0], 0.07, 5, [0, 1, 0], [1, 1, 0])];
     this.rock = new MyRock(this, 32, 32, false);
-    this.rockset = new MyRockSet(this, 5, 32, 32);
+    this.rockset = new MyRockSet(this, 10, 32, 32);
     this.rockpyramid = new MyRockPyramid(this, 5, 32, 32);
     this.pollens = [];
     for(let flower of this.flower){
@@ -75,13 +75,12 @@ export class MyScene extends CGFscene {
     this.displayAxis = true;
     this.displayNormals = false;
     this.displaySphere = false;
-    this.displayPlane = false;
-    this.displayPanorama = false;
+    this.displayPlane = true;
     this.displayFlower = true;
     this.displayPanorama = true;
     this.displayRock = false;
-    this.displayRockSet = false;
-    this.displayRockPyramid = false;
+    this.displayRockSet = true;
+    this.displayRockPyramid = true;
     this.displayBee = true;
     this.displayPollen = true;
     this.displayHive = true;
@@ -260,8 +259,8 @@ export class MyScene extends CGFscene {
 
       this.pushMatrix();
       this.appearance_terrain.apply();
-      this.translate(0,-20,0);
-      this.scale(400,400,400);
+      this.translate(0,-42,0);
+      this.scale(800,800,800);
       this.rotate(-Math.PI/2.0,1,0,0);
       this.plane.display();
       this.popMatrix();
