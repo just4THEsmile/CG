@@ -19,9 +19,13 @@ export class MyReceptacle extends CGFobject {
     }
 
     initBuffers() {
+        this.scene.appearance_receptacle.setAmbient(this.color_heart[0],this.color_heart[1],this.color_heart[2], 1);
+        this.scene.appearance_receptacle.setDiffuse(this.color_heart[0],this.color_heart[1],this.color_heart[2], 1);
+        this.scene.appearance_receptacle.setSpecular(this.color_heart[0],this.color_heart[1],this.color_heart[2], 1);
+        this.scene.appearance_receptacle.setShininess(10.0);
+
     }
     display() {
-        this.scene.main_shader.setUniformsValues({color_of_text: this.color_heart});
         this.scene.pushMatrix();
         
         this.scene.translate(this.x, this.y, this.z);

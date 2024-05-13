@@ -5,8 +5,6 @@ import { MyTriangle } from './MyTriangle.js';
 export class MyLeaf extends CGFobject {
     constructor(scene, slices, stacks, radius, height, triangleSize,color_stem,color_leaf) {
         super(scene);
-        console.log("Leaf");
-        console.log(radius);
         this.cylinder = new MyCylinder(this.scene, slices, stacks, radius,height);
         this.triangle1 = new MyTriangle(this.scene, triangleSize);
         this.triangle2 = new MyTriangle(this.scene, triangleSize);
@@ -17,10 +15,18 @@ export class MyLeaf extends CGFobject {
         this.initMaterials();
     }
     initMaterials() {
+        this.scene.appearance_stem.setAmbient(this.color_stem[0],this.color_stem[1],this.color_stem[2], 1);
+        this.scene.appearance_stem.setDiffuse(this.color_stem[0],this.color_stem[1],this.color_stem[2], 1);
+        this.scene.appearance_stem.setSpecular(this.color_stem[0],this.color_stem[1],this.color_stem[2], 1);
+        this.scene.appearance_stem.setShininess(10.0);
+
+        this.scene.appearance_leaf.setAmbient(this.color_leaf[0],this.color_leaf[1],this.color_leaf[2], 1);
+        this.scene.appearance_leaf.setDiffuse(this.color_leaf[0],this.color_leaf[1],this.color_leaf[2], 1);
+        this.scene.appearance_leaf.setSpecular(this.color_leaf[0],this.color_leaf[1],this.color_leaf[2], 1);
+        this.scene.appearance_leaf.setShininess(10.0);
     }
 
     display() {
-        this.scene.main_shader.setUniformsValues({color_of_text: this.color_stem});
         // Draw the cylinder
         this.scene.pushMatrix();
         this.scene.appearance_stem.apply();
@@ -28,10 +34,8 @@ export class MyLeaf extends CGFobject {
         this.cylinder.display();
         this.scene.popMatrix();
 
-        this.scene.main_shader.setUniformsValues({color_of_text: this.color_leaf});
         // Draw the first triangle
         this.scene.pushMatrix();
-        this.scene.main_shader.setUniformsValues()
         this.scene.appearance_leaf.apply();
         
         this.scene.rotate(this.rotationAngle, 1, 0, 0);

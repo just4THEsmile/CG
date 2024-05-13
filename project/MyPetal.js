@@ -24,11 +24,16 @@ export class MyPetal extends CGFobject {
     }
 
     initBuffers() {
+        this.scene.appearance_petal.setAmbient(this.color_petals[0],this.color_petals[1],this.color_petals[2], 1);
+        this.scene.appearance_petal.setDiffuse(this.color_petals[0],this.color_petals[1],this.color_petals[2], 1);
+        this.scene.appearance_petal.setSpecular(this.color_petals[0],this.color_petals[1],this.color_petals[2], 1);
+        this.scene.appearance_petal.setShininess(10.0);
 
     }
     display(){
-        this.scene.main_shader.setUniformsValues({color_of_text: this.color_petals});
+        this.scene.appearance_petal.apply();
         this.scene.pushMatrix();
+        
         this.scene.translate(this.x, this.y, this.z);
         this.scene.rotate(this.axis_angle, 1, 0, 0);
 
@@ -42,7 +47,6 @@ export class MyPetal extends CGFobject {
         this.scene.scale(1,1,.3)
         this.scene.rotate(Math.PI/4, 0, 1, 0);
         this.scene.rotate(Math.PI/2, 1, 0, 0);
-        this.scene.appearance_petal.apply();
         this.triangle.display();
         
         
@@ -58,7 +62,7 @@ export class MyPetal extends CGFobject {
         this.scene.rotate(Math.PI/4, 0, 1, 0);
         this.scene.rotate(Math.PI/2, 1, 0, 0);  
         
-        this.scene.appearance_petal.apply();
+        
         this.triangle.display();
         
 

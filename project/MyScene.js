@@ -9,6 +9,9 @@ import { MyRockPyramid } from "./MyRockPyramid.js";
 import { MyBee } from "./MyBee.js";
 import { MyPollen } from "./MyPollen.js"
 import { MyHive } from "./MyHive.js";
+import { MyTriangle } from "./MyTriangle.js";
+import { MyGrass } from "./Mygrass.js";
+import { MyGardenOfGrass } from "./MyGardenOfGrass.js";
 
 /**
  * MyScene
@@ -51,7 +54,6 @@ export class MyScene extends CGFscene {
     this.plane = new MyPlane(this,30);
     this.sphere = new MySphere(this, 32, 32, false);
     this.panorama = new MyPanorama(this, new CGFtexture(this, "images/city_panorama.jpg"));
-    this.flower= new MyFlower(this, 1, 8, [1, 0, 0], 0.3, [1, 1, 0], 0.07, 5, [0, 1, 0], [1, 1, 0]);
     this.rock = new MyRock(this, 32, 32, false);
     this.rockset = new MyRockSet(this, 5, 32, 32);
     this.rockpyramid = new MyRockPyramid(this, 5, 32, 32);
@@ -71,10 +73,13 @@ export class MyScene extends CGFscene {
     this.displayRock = false;
     this.displayRockSet = false;
     this.displayRockPyramid = false;
-    this.displayBee = true;
+    this.displayBee = false;
     this.displayPollen = true;
-    this.displayHive = true;
+    this.displayHive = false;
     this.useBeeCamera = false;
+    this.displayGrass = true;
+    this.displayGardenOfGrass = true;
+
 
 
     //Textures
@@ -93,6 +98,7 @@ export class MyScene extends CGFscene {
     this.texture_petal = new CGFtexture(this, "images/petal.jpg");
     this.texture_leaf = new CGFtexture(this, "images/leaf.jpg");
     this.texture_receptacle = new CGFtexture(this, "images/receptacle.jpg");
+  
 
 
 
@@ -159,6 +165,10 @@ export class MyScene extends CGFscene {
 
     
 
+    //temporary fix for textures
+    this.flower= new MyFlower(this, 1, 8, [1, 0, 0], 0.3, [1, 1, 0], 0.07, 5, [0, 1, 0], [1, 1, 0]);
+    this.grass = new MyGrass(this, 0.5,3);
+    this.GardenOfgrass = new MyGardenOfGrass(this, 10);
 
 
 
@@ -198,7 +208,6 @@ export class MyScene extends CGFscene {
     this.setShininess(10.0);
   }
   display() {
-    this.setActiveShader(this.main_shader);
     
     if (this.useBeeCamera) {
       this.camera = this.beeCamera;
@@ -291,8 +300,10 @@ export class MyScene extends CGFscene {
     }
     if (this.displayFlower) { 
       this.flower.display();
-      this.main_shader.setUniformsValues({color_of_text: [1, 1, 1]});
     } 
+    if (this.displayGrass) {
+      this.grass.display();
+    }
     if(this.displayBee){
       this.bee.display();
     }
@@ -310,13 +321,17 @@ export class MyScene extends CGFscene {
       }
     }
 
+    if(this.displayGardenOfGrass){
+      this.GardenOfgrass.display();
+    }
 
-  this.setActiveShader(this.defaultShader);
+
 
   }
   update(t){
 
     this.bee.update(t);
+    this.GardenOfgrass.update(t);
     this.checkKeys();
 
     let beePosition = this.bee.getPosition();

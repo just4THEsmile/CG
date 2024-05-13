@@ -16,23 +16,37 @@ export class MyTriangle extends CGFobject {
             -1 * this.size, 1 * this.size, 0, //0
             -1 * this.size, -1 * this.size, 0, //1
             1 * this.size, -1 * this.size, 0, //2
+        
+            -1 * this.size, 1 * this.size, 0, //3
+            -1 * this.size, -1 * this.size, 0, //4
+            1 * this.size, -1 * this.size, 0, //5
         ];
-
+        
         this.texCoords = [
+            0, 0,
+            0, 1,
+            1, 1,
+        
             0, 0,
             0, 1,
             1, 1
         ];
-
+        
         // Counter-clockwise reference of vertices
         this.indices = [
             0, 1, 2, // Front face
-            2, 1, 0, // Back face
+            5, 4, 3, // Back face
         ];
-
-        // The defined indices (and corresponding vertices)
-        // will be read in groups of three to draw triangles
-        this.primitiveType = this.scene.gl.TRIANGLES;
+        
+        this.normals = [
+            0, 0, 1,
+            0, 0, 1,
+            0, 0, 1,
+        
+            0, 0, -1,
+            0, 0, -1,
+            0, 0, -1
+        ];
 
         this.initGLBuffers();
     }
