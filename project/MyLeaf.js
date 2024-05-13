@@ -15,6 +15,7 @@ export class MyLeaf extends CGFobject {
         this.initMaterials();
     }
     initMaterials() {
+        console.log(this.color_stem);
         this.scene.appearance_stem.setAmbient(this.color_stem[0],this.color_stem[1],this.color_stem[2], 1);
         this.scene.appearance_stem.setDiffuse(this.color_stem[0],this.color_stem[1],this.color_stem[2], 1);
         this.scene.appearance_stem.setSpecular(this.color_stem[0],this.color_stem[1],this.color_stem[2], 1);

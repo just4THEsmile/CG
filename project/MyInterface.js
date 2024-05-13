@@ -26,10 +26,13 @@ export class MyInterface extends CGFinterface {
 
         this.gui.add(this.scene, 'displayFlower').name('Display Flower');
         this.gui.add(this.scene, 'displayGrass').name('Display Grass');
+        this.gui.add(this.scene, 'displayGardenOfGrass').name('Display Garden of Grass');
 
         this.gui.add(this.scene, 'displayRock').name('Display Rock');
         this.gui.add(this.scene, 'displayRockSet').name('Display Rock Set');
+        this.gui.add(this.scene, 'numRocks', 1, 100).step(1).name('Number of Rocks');
         this.gui.add(this.scene, 'displayRockPyramid').name('Display Rock Pyramid');
+        this.gui.add(this.scene, 'rockPyramidHeight', 1, 10).step(1).name('Rock Pyramid Height');
         this.gui.add(this.scene, 'displayBee').name('Display Bee');
         this.gui.add(this.scene, 'displayHive').name('Display Hive');   
         this.gui.add(this.scene, 'useBeeCamera').name('Use Bee Camera');
@@ -60,4 +63,6 @@ export class MyInterface extends CGFinterface {
     isKeyPressed(keyCode){
         return this.activeKeys[keyCode] || false;
     }
+
+
 }

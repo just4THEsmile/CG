@@ -23,25 +23,26 @@ export class MyPollen extends MySphere {
     }
 
     display() {
+        // TODO: fix this set Uniform
+        //this.scene.main_shader.setUniformsValues({color_of_text: [1, 0.5, 0]})
 
         this.scene.pushMatrix();
         this.scene.translate(this.x, this.y, this.z);
-  
-        
+
+
         this.scene.pushMatrix();
         this.scene.appearance_pollen.apply();
-        this.scene.scale(1.2, 1, 1.2);
+        this.scene.scale(0.15, 0.125, 0.15);
         super.display();
         this.scene.popMatrix();
 
         this.scene.pushMatrix();
         this.scene.appearance_pollen.apply();
-        this.scene.translate(0, 0.5, 0);
-        this.scene.scale(1.19, 1.4, 1.19); 
+        this.scene.translate(0, 0.0625, 0);
+        this.scene.scale(0.15, 0.175, 0.15 );
         super.display();
         this.scene.popMatrix();
 
         this.scene.popMatrix();
-        
     }
 }

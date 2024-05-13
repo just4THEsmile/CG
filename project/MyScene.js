@@ -21,7 +21,12 @@ export class MyScene extends CGFscene {
   constructor() {
     super();
     this.lastOKeyTime = 0;
-    this.OKeyDelay = 1000;
+    this.lastFKeyTime = 0;
+    this.lastPKeyTime = 0;
+    this.OKeyDelay = 300;
+
+    this.isMovingUp = false;
+    this.isMovingDown = false;
 
   }
   init(application) {
@@ -49,38 +54,35 @@ export class MyScene extends CGFscene {
     this.speedFactor = 1; 
     this.scaleFactor = 1;
 
-    //Initialize scene objects
-    this.axis = new CGFaxis(this);
-    this.plane = new MyPlane(this,30);
-    this.sphere = new MySphere(this, 32, 32, false);
-    this.panorama = new MyPanorama(this, new CGFtexture(this, "images/city_panorama.jpg"));
-    this.rock = new MyRock(this, 32, 32, false);
-    this.rockset = new MyRockSet(this, 5, 32, 32);
-    this.rockpyramid = new MyRockPyramid(this, 5, 32, 32);
-    this.pollens = [new MyPollen(this, 32, 32, -10,-10,-27)]; 
-    this.hive = new MyHive(this, -20, -40, 40);
-    this.bee = new MyBee(this, 0, 0, 0, this.pollens, this.hive);
+
+
+
 
 
     //Objects connected to MyInterface
     this.displayAxis = true;
     this.displayNormals = false;
     this.displaySphere = false;
-    this.displayPlane = false;
-    this.displayPanorama = false;
+    this.displayPlane = true;
     this.displayFlower = true;
     this.displayPanorama = true;
     this.displayRock = false;
-    this.displayRockSet = false;
-    this.displayRockPyramid = false;
+    this.displayRockSet = true;
+    this.numRocks = 10;
+    this.numRocksOld = this.numRocks;
+    this.displayRockPyramid = true;
+    this.rockPyramidHeight = 5;
+    this.rockPyramidHeightOld = this.rockPyramidHeight;
     this.displayBee = false;
     this.displayPollen = true;
     this.displayHive = false;
     this.useBeeCamera = false;
-    this.displayGrass = true;
-    this.displayGardenOfGrass = true;
+    this.displayGrass = false;
+    this.displayGardenOfGrass = false;
 
 
+    this.updateRockSet();
+    this.updateRockPyramid();
 
     //Textures
     this.enableTextures(true);
@@ -101,10 +103,9 @@ export class MyScene extends CGFscene {
   
 
 
-
-    //Shaders
-    this.main_shader = new CGFshader(this.gl, "shaders/texture1.vert", "shaders/gray.frag")
     
+    this.texture_wing = new CGFtexture(this, "images/wing.jpg");
+
 
     //Appearances
     this.appearance_earth = new CGFappearance(this);
@@ -163,17 +164,39 @@ export class MyScene extends CGFscene {
     this.appearance_receptacle.setTexture(this.texture_receptacle);
     this.appearance_receptacle.setTextureWrap('REPEAT', 'REPEAT');
 
-    
 
-    //temporary fix for textures
-    this.flower= new MyFlower(this, 1, 8, [1, 0, 0], 0.3, [1, 1, 0], 0.07, 5, [0, 1, 0], [1, 1, 0]);
-    this.grass = new MyGrass(this, 0.5,3);
+    this.appearance_wing = new CGFappearance(this);
+    this.appearance_wing.setTexture(this.texture_wing);
+    this.appearance_wing.setTextureWrap('REPEAT', 'REPEAT');
+    this.appearance_wing.setAmbient(1.0, 1.0, 1.0, 0.1); 
+    this.appearance_wing.setDiffuse(1.0, 1.0, 1.0, 0.2);
+    this.appearance_wing.setSpecular(1.0, 1.0, 1.0, 0.3);
+    this.appearance_wing.setEmission(1.0, 1.0, 1.0, 0.1);
+    this.appearance_wing.setShininess(10.0);
+
+    //Initialize scene objects
+
     this.GardenOfgrass = new MyGardenOfGrass(this, 10);
-
-
-
-
+    this.axis = new CGFaxis(this);
+    this.plane = new MyPlane(this,30);
+    this.sphere = new MySphere(this, 32, 32, false);
+    this.panorama = new MyPanorama(this, new CGFtexture(this, "images/city_panorama.jpg"));
+     this.rock = new MyRock(this, 32, 32, false);
+    this.rockset = new MyRockSet(this, 10, 32, 32);
+    this.rockpyramid = new MyRockPyramid(this, 5, 32, 32);
+    this.pollens = [];
+    this.hive = new MyHive(this, -20, -40, 40);
+    this.bee = new MyBee(this, 0, 0, 0, this.pollens, this.hive);
+    this.flower= [new MyFlower(this,0,-0,0, 1, 8, [1, 0, 0], 0.3, [1, 1, 0], 0.07, 5, [0, 1, 0], [1, 1, 0])];
+    for(let flower of this.flower){
+      let pollen_x = flower.x + flower.x_pos;
+      let pollen_y = flower.y + flower.y_pos + 0.2;  
+      let pollen_z = flower.z + flower.z_pos;
+      this.pollens.push(new MyPollen(this, 32, 32, pollen_x, pollen_y, pollen_z));
+    }
+    this.grass = new MyGrass(this, 0.5,3);
   }
+
   initLights() {
     this.lights[0].setPosition(15, 0, 5, 1);
     this.lights[0].setDiffuse(1.0, 1.0, 1.0, 1.0);
@@ -207,7 +230,15 @@ export class MyScene extends CGFscene {
     this.setSpecular(0.2, 0.4, 0.8, 1.0);
     this.setShininess(10.0);
   }
+  updateRockSet() {
+    this.rockset = new MyRockSet(this, this.numRocks, 32, 32);
+  }
+
+  updateRockPyramid() {
+    this.rockpyramid = new MyRockPyramid(this, this.rockPyramidHeight, 32, 32);
+  }
   display() {
+    
     
     if (this.useBeeCamera) {
       this.camera = this.beeCamera;
@@ -253,8 +284,8 @@ export class MyScene extends CGFscene {
 
       this.pushMatrix();
       this.appearance_terrain.apply();
-      this.translate(0,-20,0);
-      this.scale(400,400,400);
+      this.translate(0,-42,0);
+      this.scale(800,800,800);
       this.rotate(-Math.PI/2.0,1,0,0);
       this.plane.display();
       this.popMatrix();
@@ -299,7 +330,10 @@ export class MyScene extends CGFscene {
       this.hive.display();
     }
     if (this.displayFlower) { 
-      this.flower.display();
+
+      for(let flower of this.flower){
+        flower.display();
+      }
     } 
     if (this.displayGrass) {
       this.grass.display();
@@ -352,6 +386,24 @@ export class MyScene extends CGFscene {
         beePosition.z + Math.cos(beeOrientation)
     ));
 
+    if(this.isMovingDown){
+      this.bee.moveY(-0.25);
+    }
+
+    if(this.isMovingUp){
+      this.bee.moveY(0.25);
+    }
+
+    if(this.numRocksOld != this.numRocks){
+      this.updateRockSet();
+      this.numRocksOld = this.numRocks;
+    }
+
+    if(this.rockPyramidHeightOld != this.rockPyramidHeight){
+      this.updateRockPyramid();
+      this.rockPyramidHeightOld = this.rockPyramidHeight;
+    }
+
 
   }
   checkKeys(){
@@ -382,10 +434,6 @@ export class MyScene extends CGFscene {
       keysPressed=true;
     }
 
-    if(this.gui.isKeyPressed("KeyF")){
-      
-    }
-
     if(this.gui.isKeyPressed("KeyD")){
       
       this.bee.turn(-0.1);
@@ -404,18 +452,34 @@ export class MyScene extends CGFscene {
 
     if(this.gui.isKeyPressed("KeyF")){
 
-      this.bee.moveY(0.25);
+      let currentTime = Date.now();
 
-      text+=" F ";
-      keysPressed=true;
+      if (currentTime - this.lastFKeyTime > this.OKeyDelay) {
+        
+        this.isMovingDown = !this.isMovingDown;
+        this.isMovingUp = false;
+        
+        text+=" F ";
+        keysPressed=true;
+      }
+
+      this.lastFKeyTime = currentTime;
     }
 
     if(this.gui.isKeyPressed("KeyP")){
 
-      this.bee.moveY(-0.25);
+      let currentTime = Date.now();
 
-      text+=" P ";
-      keysPressed=true;
+      if (currentTime - this.lastPKeyTime > this.OKeyDelay) {
+
+        this.isMovingUp = !this.isMovingUp;
+        this.isMovingDown = false;
+
+        text+=" P ";
+        keysPressed=true;
+      }
+
+      this.lastPKeyTime = currentTime;
     }
 
     if(this.gui.isKeyPressed("KeyO")){

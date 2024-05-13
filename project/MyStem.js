@@ -23,7 +23,7 @@ export class MyStem extends CGFobject {
     }
 
     initMaterials() {
-
+        
         this.scene.appearance_stem.setAmbient(this.color_stem[0],this.color_stem[1],this.color_stem[2], 1);
         this.scene.appearance_stem.setDiffuse(this.color_stem[0],this.color_stem[1],this.color_stem[2], 1);
         this.scene.appearance_stem.setSpecular(this.color_stem[0],this.color_stem[1],this.color_stem[2], 1);
@@ -39,9 +39,6 @@ export class MyStem extends CGFobject {
         for (let i = 0; i < this.stem_size; i++) {
             rad_z += this.rand_stem_rot_z[i];
             rad_x += this.rand_stem_rot_x[i];
-            console.log(this.color_stem);
-            this.scene.appearance_stem.set
-            this.scene.main_shader.setUniformsValues({color_of_text: this.color_stem});
 
             this.scene.pushMatrix();
             this.scene.translate(x, y, z);
