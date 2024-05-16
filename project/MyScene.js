@@ -187,8 +187,8 @@ export class MyScene extends CGFscene {
     this.pollens = [];
     this.hive = new MyHive(this, -20, -40, 40);
     this.bee = new MyBee(this, 0, 0, 0, this.pollens, this.hive);
-    this.flower= [new MyFlower(this,0,-0,0, 1, 8, [1, 0, 0], 0.3, [1, 1, 0], 0.07, 5, [0, 1, 0], [1, 1, 0])];
-    for(let flower of this.flower){
+    this.flowers= [new MyFlower(this,0,-0,0, 1, 8, [1, 0, 0], 0.3, [1, 1, 0], 0.07, 5, [0, 1, 0], [1, 1, 0])];
+    for(let flower of this.flowers){
       let pollen_x = flower.x + flower.x_pos;
       let pollen_y = flower.y + flower.y_pos + 0.2;  
       let pollen_z = flower.z + flower.z_pos;
@@ -331,7 +331,7 @@ export class MyScene extends CGFscene {
     }
     if (this.displayFlower) { 
 
-      for(let flower of this.flower){
+      for(let flower of this.flowers){
         flower.display();
       }
     } 

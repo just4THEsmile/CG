@@ -32,8 +32,6 @@ export class MyGrass extends CGFobject{
         let rad_y= 0;
         for (let i = 0; i < this.heigth; i++) {
             rad_x += this.rand_inc_x;
-            console.log("cooords");
-            console.log(x,y,z);
 
             this.scene.pushMatrix();
             this.scene.appearance_stem.apply();
