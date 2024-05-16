@@ -6,7 +6,7 @@ export class MyGardenOfGrass extends CGFobject{
     constructor(scene, size) {
             
             super(scene);
-            this.size = size;
+            this.size = 25;
             this.grass_list = []
             for(let i = 0; i < this.size*this.size; i++){
               let size= Math.random()*0.2+0.2;

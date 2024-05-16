@@ -65,7 +65,7 @@ export class MyScene extends CGFscene {
     this.displayNormals = false;
     this.displaySphere = false;
     this.displayPlane = false;
-    this.displayFlower = true;
+    this.displayFlower = false;
     this.displayPanorama = false;
     this.displayRock = false;
     this.displayRockSet = false;
@@ -75,12 +75,12 @@ export class MyScene extends CGFscene {
     this.rockPyramidHeight = 5;
     this.rockPyramidHeightOld = this.rockPyramidHeight;
     this.displayBee = false;
-    this.displayPollen = true;
+    this.displayPollen = false;
     this.displayHive = false;
     this.useBeeCamera = false;
     this.displayGrass = false;
-    this.displayGardenOfGrass = false;
-    this.displayFlowers = true;
+    this.displayGardenOfGrass = true;
+    this.displayFlowers = false;
 
 
     this.updateRockSet();
@@ -180,7 +180,7 @@ export class MyScene extends CGFscene {
     this.hive = new MyHive(this, -20, -40, 40);
     this.bee = new MyBee(this, 0, 0, 0, this.pollens, this.hive);
     this.flower=new MyFlower(this,-5,0,-5, 1, 8, [1, 0, 0], 0.3, [1, 1, 0], 0.07, 5, [0, 1, 0], [1, 1, 0])
-    this.gardenOfgrass = new MyGardenOfGrass(this, 10);
+    this.gardenOfgrass = new MyGardenOfGrass(this, 50);
     this.flowers = new MyGarden(this, 5).get_flowers();
     for(let flower_loop of this.flowers){
       let pollen_x = flower_loop.x + flower_loop.x_pos;
@@ -341,6 +341,7 @@ export class MyScene extends CGFscene {
       }
     }
     if (this.displayGrass) {
+      
       this.grass.display();
     }
     if(this.displayBee){
@@ -361,6 +362,13 @@ export class MyScene extends CGFscene {
     }
 
     if(this.displayGardenOfGrass){
+      this.pushMatrix();
+      this.appearance_terrain.apply();
+      this.translate(0,0,0);
+      this.scale(80,80,80);
+      this.rotate(-Math.PI/2.0,1,0,0);
+      this.plane.display();
+      this.popMatrix();
       this.GardenOfgrass.display();
     }
 
