@@ -19,17 +19,20 @@ export class MyReceptacle extends CGFobject {
     }
 
     initBuffers() {
-        this.scene.appearance_receptacle.setAmbient(this.color_heart[0],this.color_heart[1],this.color_heart[2], 1);
-        this.scene.appearance_receptacle.setDiffuse(this.color_heart[0],this.color_heart[1],this.color_heart[2], 1);
-        this.scene.appearance_receptacle.setSpecular(this.color_heart[0],this.color_heart[1],this.color_heart[2], 1);
-        this.scene.appearance_receptacle.setShininess(10.0);
+        this.appearance_receptacle = new CGFappearance(this.scene);
+        this.appearance_receptacle.setTexture(this.scene.texture_receptacle);
+        this.appearance_receptacle.setTextureWrap('REPEAT', 'REPEAT');
+        this.appearance_receptacle.setAmbient(this.color_heart[0],this.color_heart[1],this.color_heart[2], 1);
+        this.appearance_receptacle.setDiffuse(this.color_heart[0],this.color_heart[1],this.color_heart[2], 1);
+        this.appearance_receptacle.setSpecular(this.color_heart[0],this.color_heart[1],this.color_heart[2], 1);
+        this.appearance_receptacle.setShininess(10.0);
 
     }
     display() {
         this.scene.pushMatrix();
         this.scene.translate(this.x, this.y, this.z);
         this.scene.scale(this.hearth_radius, this.hearth_radius, this.hearth_radius);
-        this.scene.appearance_receptacle.apply();
+        this.appearance_receptacle.apply();
         this.sphere.display();
         this.scene.popMatrix();
         

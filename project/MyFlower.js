@@ -22,8 +22,8 @@ export class MyFlower extends CGFobject {
         for(let i = 0; i < stem_size; i++){
             this.rand_rot.push(Math.random()*Math.PI*2);
             this.rand_stem.push(Math.random() * 0.5 + 0.5);
-            this.rand_stem_rot_x.push(Math.random()* Math.PI / 8 - Math.PI / 16);
-            this.rand_stem_rot_z.push(Math.random()* Math.PI / 8 - Math.PI / 16);
+            this.rand_stem_rot_x.push(Math.random()* Math.PI / 16 - Math.PI / 32);
+            this.rand_stem_rot_z.push(Math.random()* Math.PI / 16 - Math.PI / 32);
             this.rand_leaf_size.push(Math.random() * 0.8 + 0.4);
         }
 
@@ -51,7 +51,6 @@ export class MyFlower extends CGFobject {
 
 
         this.receptacle = new MyReceptacle(scene, hearth_radius, color_heart,stem_size,this.x,this.y,this.z);
-        console.log("Coords Receptacle: " + this.x + " " + this.y + " " + this.z)
         
         this.petals = [];
         var angle = 2 * Math.PI / num_petals;

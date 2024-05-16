@@ -12,6 +12,7 @@ import { MyHive } from "./MyHive.js";
 import { MyTriangle } from "./MyTriangle.js";
 import { MyGrass } from "./Mygrass.js";
 import { MyGardenOfGrass } from "./MyGardenOfGrass.js";
+import { MyGarden } from "./MyGarden.js";
 
 /**
  * MyScene
@@ -63,14 +64,14 @@ export class MyScene extends CGFscene {
     this.displayAxis = true;
     this.displayNormals = false;
     this.displaySphere = false;
-    this.displayPlane = true;
+    this.displayPlane = false;
     this.displayFlower = true;
-    this.displayPanorama = true;
+    this.displayPanorama = false;
     this.displayRock = false;
-    this.displayRockSet = true;
+    this.displayRockSet = false;
     this.numRocks = 10;
     this.numRocksOld = this.numRocks;
-    this.displayRockPyramid = true;
+    this.displayRockPyramid = false;
     this.rockPyramidHeight = 5;
     this.rockPyramidHeightOld = this.rockPyramidHeight;
     this.displayBee = false;
@@ -79,6 +80,7 @@ export class MyScene extends CGFscene {
     this.useBeeCamera = false;
     this.displayGrass = false;
     this.displayGardenOfGrass = false;
+    this.displayFlowers = true;
 
 
     this.updateRockSet();
@@ -152,17 +154,7 @@ export class MyScene extends CGFscene {
     this.appearance_stem.setTexture(this.texture_stem);
     this.appearance_stem.setTextureWrap('REPEAT', 'REPEAT');
 
-    this.appearance_petal = new CGFappearance(this);
-    this.appearance_petal.setTexture(this.texture_petal);
-    this.appearance_petal.setTextureWrap('CLAMP_TO_EDGE', 'CLAMP_TO_EDGE');
 
-    this.appearance_leaf = new CGFappearance(this);
-    this.appearance_leaf.setTexture(this.texture_leaf);
-    this.appearance_leaf.setTextureWrap('REPEAT', 'REPEAT');
-
-    this.appearance_receptacle = new CGFappearance(this);
-    this.appearance_receptacle.setTexture(this.texture_receptacle);
-    this.appearance_receptacle.setTextureWrap('REPEAT', 'REPEAT');
 
 
     this.appearance_wing = new CGFappearance(this);
@@ -187,11 +179,13 @@ export class MyScene extends CGFscene {
     this.pollens = [];
     this.hive = new MyHive(this, -20, -40, 40);
     this.bee = new MyBee(this, 0, 0, 0, this.pollens, this.hive);
-    this.flowers= [new MyFlower(this,0,-0,0, 1, 8, [1, 0, 0], 0.3, [1, 1, 0], 0.07, 5, [0, 1, 0], [1, 1, 0])];
-    for(let flower of this.flowers){
-      let pollen_x = flower.x + flower.x_pos;
-      let pollen_y = flower.y + flower.y_pos + 0.2;  
-      let pollen_z = flower.z + flower.z_pos;
+    this.flower=new MyFlower(this,-5,0,-5, 1, 8, [1, 0, 0], 0.3, [1, 1, 0], 0.07, 5, [0, 1, 0], [1, 1, 0])
+    this.gardenOfgrass = new MyGardenOfGrass(this, 10);
+    this.flowers = new MyGarden(this, 5).get_flowers();
+    for(let flower_loop of this.flowers){
+      let pollen_x = flower_loop.x + flower_loop.x_pos;
+      let pollen_y = flower_loop.y + flower_loop.y_pos + 0.2;  
+      let pollen_z = flower_loop.z + flower_loop.z_pos;
       this.pollens.push(new MyPollen(this, 32, 32, pollen_x, pollen_y, pollen_z));
     }
     this.grass = new MyGrass(this, 0.5,3);
@@ -320,7 +314,7 @@ export class MyScene extends CGFscene {
         }
     }  
 
-    if(this.displayPollen){
+    if(this.displayPollen && this.displayFlowers){
       for(let polen of this.pollens){
         polen.display();
       }
@@ -330,11 +324,22 @@ export class MyScene extends CGFscene {
       this.hive.display();
     }
     if (this.displayFlower) { 
-
-      for(let flower of this.flowers){
-        flower.display();
-      }
+      this.flower.display();
     } 
+    if(this.displayFlowers){
+      this.pushMatrix();
+      this.appearance_terrain.apply();
+      this.translate(0,0,0);
+      this.scale(80,80,80);
+      this.rotate(-Math.PI/2.0,1,0,0);
+      this.plane.display();
+      this.popMatrix();
+
+      if(this.displayNormals) this.plane.enableNormalViz();
+      for(let flower_loop of this.flowers){
+        flower_loop.display();
+      }
+    }
     if (this.displayGrass) {
       this.grass.display();
     }

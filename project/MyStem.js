@@ -23,11 +23,14 @@ export class MyStem extends CGFobject {
     }
 
     initMaterials() {
+        this.stem_appearance = new CGFappearance(this.scene);
+        this.stem_appearance.setTexture(this.scene.texture_stem);
+        this.stem_appearance.setTextureWrap('REPEAT', 'REPEAT');
+        this.stem_appearance.setAmbient(this.color_stem[0],this.color_stem[1],this.color_stem[2], 1);
+        this.stem_appearance.setDiffuse(this.color_stem[0],this.color_stem[1],this.color_stem[2], 1);
+        this.stem_appearance.setSpecular(this.color_stem[0],this.color_stem[1],this.color_stem[2], 1);
+        this.stem_appearance.setShininess(10.0);
         
-        this.scene.appearance_stem.setAmbient(this.color_stem[0],this.color_stem[1],this.color_stem[2], 1);
-        this.scene.appearance_stem.setDiffuse(this.color_stem[0],this.color_stem[1],this.color_stem[2], 1);
-        this.scene.appearance_stem.setSpecular(this.color_stem[0],this.color_stem[1],this.color_stem[2], 1);
-        this.scene.appearance_stem.setShininess(10.0);
     
     }
     display() {
@@ -39,14 +42,14 @@ export class MyStem extends CGFobject {
         for (let i = 0; i < this.stem_size; i++) {
             rad_z += this.rand_stem_rot_z[i];
             rad_x += this.rand_stem_rot_x[i];
-
+            this.stem_appearance.apply();
             this.scene.pushMatrix();
             this.scene.translate(x, y, z);
 
             this.scene.rotate(rad_x, 0, 0, 1);
             this.scene.rotate(rad_z, 1, 0, 0);
             this.scene.scale(1, this.rand_stem[i], 1);
-            this.scene.appearance_stem.apply();
+            this.stem_appearance.apply();
             this.stem.display();
             this.scene.popMatrix();
 
@@ -56,7 +59,7 @@ export class MyStem extends CGFobject {
             if (i < this.stem_size - 1) {
                 this.scene.pushMatrix();
                 this.scene.translate(x, y , z);
-                this.scene.appearance_stem.apply();
+                this.stem_appearance.apply();
                 this.leaf.scene.rotate(rad_x, 0, 0, 1);
                 this.leaf.scene.rotate(rad_z, 1, 0, 0);
                 this.scene.rotate(this.rand_rot[i],0,1,0);

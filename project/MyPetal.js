@@ -1,4 +1,4 @@
-import {CGFobject,CGFappearance,CGFshader} from '../lib/CGF.js';
+import {CGFobject,CGFappearance,CGFshader,CGFtexture} from '../lib/CGF.js';
 import { MyTriangle } from './MyTriangle.js';
 
 export class MyPetal extends CGFobject {
@@ -24,14 +24,17 @@ export class MyPetal extends CGFobject {
     }
 
     initBuffers() {
-        this.scene.appearance_petal.setAmbient(this.color_petals[0],this.color_petals[1],this.color_petals[2], 1);
-        this.scene.appearance_petal.setDiffuse(this.color_petals[0],this.color_petals[1],this.color_petals[2], 1);
-        this.scene.appearance_petal.setSpecular(this.color_petals[0],this.color_petals[1],this.color_petals[2], 1);
-        this.scene.appearance_petal.setShininess(10.0);
+        this.appearance_petal = new CGFappearance(this.scene);
+        this.appearance_petal.setTexture(this.scene.texture_petal);
+        this.appearance_petal.setTextureWrap('CLAMP_TO_EDGE', 'CLAMP_TO_EDGE');
+        this.appearance_petal.setAmbient(this.color_petals[0],this.color_petals[1],this.color_petals[2], 1);
+        this.appearance_petal.setDiffuse(this.color_petals[0],this.color_petals[1],this.color_petals[2], 1);
+        this.appearance_petal.setSpecular(this.color_petals[0],this.color_petals[1],this.color_petals[2], 1);
+        this.appearance_petal.setShininess(10.0);
 
     }
     display(){
-        this.scene.appearance_petal.apply();
+        this.appearance_petal.apply();
         this.scene.pushMatrix();
         
         this.scene.translate(this.x, this.y, this.z);
