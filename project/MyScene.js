@@ -9,7 +9,7 @@ import { MyRockPyramid } from "./MyRockPyramid.js";
 import { MyBee } from "./MyBee.js";
 import { MyPollen } from "./MyPollen.js"
 import { MyHive } from "./MyHive.js";
-import { MyTriangle } from "./MyTriangle.js";
+import { MyTriangle } from "./Geometric/MyTriangle.js";
 import { MyGrass } from "./Mygrass.js";
 import { MyGardenOfGrass } from "./MyGardenOfGrass.js";
 import { MyGarden } from "./MyGarden.js";

@@ -1,6 +1,6 @@
-import { CGFobject, CGFappearance } from '../lib/CGF.js';
-import { MyCylinder } from './MyCylinder.js';
-import { MyTriangle } from './MyTriangle.js';
+import { CGFobject, CGFappearance } from '../../lib/CGF.js';
+import { MyCylinder } from '../Geometric/MyCylinder.js';
+import { MyTriangle } from '../Geometric/MyTriangle.js';
 
 export class MyLeaf extends CGFobject {
     constructor(scene, slices, stacks, radius, height, triangleSize,color_stem,color_leaf) {

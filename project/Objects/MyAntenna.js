@@ -1,5 +1,5 @@
 import { CGFobject, CGFappearance } from '../../lib/CGF.js';
-import { MyCylinder } from '../Geometric/MyCylinder.js';
+import { MyCylinder2 } from '../Geometric/MyCylinder2.js';
 import { MySphere } from '../Geometric/MySphere.js';
 
 export class MyAntenna extends CGFobject {
@@ -8,7 +8,7 @@ export class MyAntenna extends CGFobject {
 
         super(scene);
 
-        this.antennaScape = new MyCylinder(scene, 32, 32, 1, 0.05);
+        this.antennaScape = new MyCylinder2(scene, 32, 32, 1, 0.05);
         this.antennaFlagellum = new MySphere(scene, 32, 32, false);
 
 

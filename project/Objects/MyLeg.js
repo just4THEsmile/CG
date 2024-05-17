@@ -1,5 +1,5 @@
 import { CGFobject, CGFappearance } from '../../lib/CGF.js';
-import { MyCylinder } from '../Geometric/MyCylinder.js';
+import { MyCylinder2 } from '../Geometric/MyCylinder2.js';
 import { MySphere } from '../Geometric/MySphere.js';
 
 
@@ -9,9 +9,9 @@ export class MyLeg extends CGFobject {
         
         super(scene);
         
-        this.topleg = new MyCylinder(scene, 32, 32, 1, 0.05);
+        this.topleg = new MyCylinder2(scene, 32, 32, 1, 0.05);
         this.ankle = new MySphere(scene, 32, 32, false);
-        this.bottomleg = new MyCylinder(scene, 32, 32, 1, 0.05);
+        this.bottomleg = new MyCylinder2(scene, 32, 32, 1, 0.05);
 
         this.initMaterials();
     }

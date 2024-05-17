@@ -1,5 +1,5 @@
 import {CGFobject,CGFappearance,CGFshader} from '../lib/CGF.js';
-import { MyTriangle } from './MyTriangle.js';
+import { MyTriangle } from './Geometric/MyTriangle.js';
 
 export class MyGrass extends CGFobject{
     constructor(scene, size,heigth) {

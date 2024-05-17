@@ -1,5 +1,5 @@
-import {CGFobject,CGFappearance,CGFshader,CGFtexture} from '../lib/CGF.js';
-import { MyTriangle } from './MyTriangle.js';
+import {CGFobject,CGFappearance,CGFshader,CGFtexture} from '../../lib/CGF.js';
+import { MyTriangle } from '../Geometric/MyTriangle.js';
 
 export class MyPetal extends CGFobject {
 
