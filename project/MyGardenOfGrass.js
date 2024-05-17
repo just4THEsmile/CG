@@ -16,6 +16,8 @@ export class MyGardenOfGrass extends CGFobject{
             
     }
     display(){
+        this.scene.pushMatrix();
+        this.scene.translate(-60,-41,-60);
         for(let i = 0; i < this.size*this.size; i++){
             
             this.scene.pushMatrix();

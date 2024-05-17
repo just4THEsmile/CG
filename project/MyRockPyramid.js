@@ -32,7 +32,7 @@ export class MyRockPyramid extends CGFobject {
 
     display(){
         this.scene.pushMatrix();
-        this.scene.translate(0,-41,0);
+        this.scene.translate(0,-41,35);
         for(let rock of this.rocks){
             this.scene.pushMatrix();
             this.scene.translate(rock.position[0],rock.position[1],rock.position[2]);

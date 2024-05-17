@@ -32,7 +32,7 @@ export class MyGarden extends CGFobject {
 
 
 
-            this.flower_list.push(new MyFlower(this.scene,i%this.size*4,0,i/this.size*4, rand_external_radius, rand_petal_num, rand_petal_color, rand_receptacle_radius, rand_receptacle_color, stem_radius, stem_size, rand_stem_color, rand_leaf_color))
+            this.flower_list.push(new MyFlower(this.scene,i%this.size*4 -65,-41,i/this.size*4 - 65, rand_external_radius, rand_petal_num, rand_petal_color, rand_receptacle_radius, rand_receptacle_color, stem_radius, stem_size, rand_stem_color, rand_leaf_color))
         }
     }
 
