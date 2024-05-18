@@ -139,7 +139,9 @@ export class MyHive extends CGFobject{
         for (let i = 0; i < this.pollens.length; i++) {
             this.new_pollen = new MyPollen(this.scene, 32, 32, 0, 0, 0);
             this.scene.pushMatrix();
-            this.scene.translate(0, 20, 0);
+            // Add an offset to the x and z coordinates
+            let offset = i ; // Change this value to adjust the distance between the pollens
+            this.scene.translate(offset, 20, 0);
             this.new_pollen.display();
             this.scene.popMatrix();
         }

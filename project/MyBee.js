@@ -24,6 +24,7 @@ export class MyBee extends CGFobject{
 
         this.velocity = [0,0,0];
 
+        //Bee Components
         this.head = new MyHead(scene);
         this.eye = new MyEye(scene);
         this.torax = new MyTorax(scene);
@@ -34,29 +35,36 @@ export class MyBee extends CGFobject{
         this.wing = new MyWing(scene);
         this.mandible = new MySting(scene);
 
-
-        this.bee_AI = false;
-        this.current_pollen = null;
-        this.pollens = pollens;
-        this.rotate_legs_pollen = 0;
-        this.hive = hive;
+        //Bee Variables
+        this.bee_AI = false;            //Bee AI
+        this.current_pollen = null;     //Current Pollen
+        this.pollens = pollens;         //List of Pollens available
+        this.rotate_legs_pollen = 0;    //Rotation of the legs when grabbing a pollen
+        this.hive = hive;               //Hive Object
 
         
 
     }
 
+    //Bee AI
     intelligence(){
 
         this.bee_AI = !this.bee_AI;
 
+        //Deactivate Bee AI
         if(!this.bee_AI){
             console.log("Bee AI Deactivated")
             this.target = null;
             this.velocity = [0,0,0];
             return;
         }
+
         console.log("Bee AI Activated")
+
+        //Bee AI Initial Position
         this.initialPosition = { x: this.x, y: this.y, z: this.z };
+
+        //If Bee has a pollen, go to the Hive. If not, go to the nearest Pollen
         if(this.current_pollen == null){
             console.log("Bee AI Going to Pollen");
             this.target = this.findNearestPollen();
@@ -71,6 +79,7 @@ export class MyBee extends CGFobject{
 
     update(t){
 
+        //Get Speed and Scale Factor
         this.speedFactor = this.scene.speedFactor;
         this.scaleFactor = this.scene.scaleFactor;
 
@@ -80,6 +89,7 @@ export class MyBee extends CGFobject{
         
         let deltaTime = t - this.lastUpdateTime;
 
+        //Update Bee Position
         this.x += this.velocity[0] * deltaTime;
         this.baseY += this.velocity[1] * deltaTime;
         this.z += this.velocity[2] * deltaTime;
@@ -99,9 +109,10 @@ export class MyBee extends CGFobject{
             this.rotate_legs_pollen = 0;
         }
 
-        //Check if Bee is near the Hive
+        //Check if Bee is near the Hive and drop the Pollen
         if(this.checkHive() && this.current_pollen != null){
             this.rotate_legs_pollen = 0;
+            this.current_pollen = null;
         }
         else if(this.current_pollen != null){
             this.rotate_legs_pollen = 45;
@@ -118,10 +129,13 @@ export class MyBee extends CGFobject{
     moveTowards(target,t){
 
         this.offset = 0;
+
+        //Offset for the Hive, so that the bee doesn't go through the hive frames
         if(this.target == this.hive){
             this.offset = 25;
         }
 
+        //Calculate the distance between the bee and the target
         let dx = target.x - this.x;
         let dy = target.y - this.y + this.offset;
         let dz = target.z - this.z;
@@ -161,13 +175,16 @@ export class MyBee extends CGFobject{
         let nearestPollen = null;
         let nearestDistance = Infinity;
 
+        //Find the nearest Pollen
         for(let i = 0; i < this.pollens.length; i++){
+            //Calculate the distance between the bee and the pollen
             let dx = this.pollens[i].x - this.x;
             let dy = this.pollens[i].y - this.y;
             let dz = this.pollens[i].z - this.z;
 
             let distance = Math.sqrt(dx*dx + dy*dy + dz*dz);
 
+            //Check if the distance is smaller than the nearest distance
             if (distance < nearestDistance) {
                 nearestDistance = distance;
                 nearestPollen = this.pollens[i];
@@ -178,12 +195,14 @@ export class MyBee extends CGFobject{
     }
 
     checkHive() {
+        //Calculate the distance between the bee and the hive
         let dx = this.hive.x - this.x;
         let dy = this.hive.y - this.y + 20;
         let dz = this.hive.z - this.z;
     
         let distance = Math.sqrt(dx*dx + dy*dy + dz*dz);
 
+        //Check if the bee reached the hive
         if (distance < 8 && this.current_pollen != null) {
             console.log("Reached Hive");
             this.hive.pollens.push(this.current_pollen);
@@ -197,14 +216,17 @@ export class MyBee extends CGFobject{
             return true;
         }
 
+        //Check if the bee is near a pollen
         for(let i = 0; i < this.pollens.length; i++){
+
+            //Calculate the distance between the bee and the pollen
             let dx = this.pollens[i].x - this.x;
             let dy = this.pollens[i].y - this.y;
             let dz = this.pollens[i].z - this.z;
 
             let distance = Math.sqrt(dx*dx + dy*dy + dz*dz);
 
-    
+            
             if (distance < 3) {
                 this.current_pollen = this.pollens[i];
                 console.log("Pollen Found");
@@ -246,7 +268,6 @@ export class MyBee extends CGFobject{
 
     moveY(v){
         this.baseY += v * this.speedFactor;
-
     }
 
     reset(){

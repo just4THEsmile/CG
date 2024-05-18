@@ -21,11 +21,14 @@ import { MyGarden } from "./MyGarden.js";
 export class MyScene extends CGFscene {
   constructor() {
     super();
+    
+    //Save time from last key press of respective key
     this.lastOKeyTime = 0;
     this.lastFKeyTime = 0;
     this.lastPKeyTime = 0;
     this.OKeyDelay = 300;
 
+    //Boolean to check if bee is moving up or down
     this.isMovingUp = false;
     this.isMovingDown = false;
 
@@ -82,7 +85,7 @@ export class MyScene extends CGFscene {
     this.displayGardenOfGrass = true;
     this.displayFlowers = true;
 
-
+    //Objects with sliders
     this.updateRockSet();
     this.updateRockPyramid();
 
@@ -102,10 +105,6 @@ export class MyScene extends CGFscene {
     this.texture_petal = new CGFtexture(this, "images/petal.jpg");
     this.texture_leaf = new CGFtexture(this, "images/leaf.jpg");
     this.texture_receptacle = new CGFtexture(this, "images/receptacle.jpg");
-  
-
-
-    
     this.texture_wing = new CGFtexture(this, "images/wing.jpg");
 
 
@@ -154,9 +153,6 @@ export class MyScene extends CGFscene {
     this.appearance_stem.setTexture(this.texture_stem);
     this.appearance_stem.setTextureWrap('REPEAT', 'REPEAT');
 
-
-
-
     this.appearance_wing = new CGFappearance(this);
     this.appearance_wing.setTexture(this.texture_wing);
     this.appearance_wing.setTextureWrap('REPEAT', 'REPEAT');
@@ -167,13 +163,12 @@ export class MyScene extends CGFscene {
     this.appearance_wing.setShininess(10.0);
 
     //Initialize scene objects
-
     this.GardenOfgrass = new MyGardenOfGrass(this, 10);
     this.axis = new CGFaxis(this);
     this.plane = new MyPlane(this,30);
     this.sphere = new MySphere(this, 32, 32, false);
     this.panorama = new MyPanorama(this, new CGFtexture(this, "images/city_panorama.jpg"));
-     this.rock = new MyRock(this, 32, 32, false);
+    this.rock = new MyRock(this, 32, 32, false);
     this.rockset = new MyRockSet(this, 10, 32, 32);
     this.rockpyramid = new MyRockPyramid(this, 5, 32, 32);
     this.pollens = [];
@@ -209,6 +204,7 @@ export class MyScene extends CGFscene {
       vec3.fromValues(50, 10, 15),
       vec3.fromValues(0, 0, 0)
     );
+    //Bee Camera
     this.beeCamera = new CGFcamera(
       0.4, 
       0.1, 
@@ -224,16 +220,17 @@ export class MyScene extends CGFscene {
     this.setSpecular(0.2, 0.4, 0.8, 1.0);
     this.setShininess(10.0);
   }
+  //Called periodically 
   updateRockSet() {
     this.rockset = new MyRockSet(this, this.numRocks, 32, 32);
   }
-
+  //Called periodically
   updateRockPyramid() {
     this.rockpyramid = new MyRockPyramid(this, this.rockPyramidHeight, 32, 32);
   }
   display() {
     
-    
+    //Camera setup
     if (this.useBeeCamera) {
       this.camera = this.beeCamera;
     } else {

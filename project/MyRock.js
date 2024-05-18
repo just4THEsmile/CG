@@ -27,24 +27,28 @@ export class MyRock extends CGFobject {
         this.normals = [];
         this.texCoords = [];
 
+
         for(let stack = 0; stack <= this.stacks; stack++) {
 
             let theta = stack * Math.PI / this.stacks;
             let sinTheta = Math.sin(theta);
             let cosTheta = Math.cos(theta);
 
+            // Generate a random offset for the first and last slice of each stack
             let sameOffset = (Math.random() - 0.5) / 10;
 
             for(let slice = 0; slice <= this.slices; slice++) {
-                    
+                
                 let angle = slice * 2 * Math.PI / this.slices;
                 let sinAngle = Math.sin(angle);
                 let cosAngle = Math.cos(angle);
 
+                // Calculate the x, y, and z coordinates for the current vertex
                 let x = cosAngle * sinTheta;
                 let y = cosTheta;
                 let z = sinAngle * sinTheta;
 
+                // If it's the first or last slice of the stack, use the same offset for all vertices
                 if(slice === 0 || slice === this.slices) {
                     x += sameOffset;
                     y += sameOffset;
@@ -56,6 +60,7 @@ export class MyRock extends CGFobject {
                     z += (Math.random() - 0.5) / 10;
                 }
 
+                // Calculate the texture coordinates for the current vertex
                 let u = slice / this.slices;
                 let v = stack / this.stacks;
                 let new_u = 1 - u;
@@ -84,7 +89,7 @@ export class MyRock extends CGFobject {
 
                     this.indices.push(first + 1, second, first);
                     this.indices.push(first + 1, second + 1, second);
-                   
+                
                 }
                 
             }
