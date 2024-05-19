@@ -51,8 +51,11 @@ Para a criação de um panorama, foi utilizado os seguintes ficheiros ``MySphere
 #### Tópico 2: Flores
 
 ##### Modelação de uma flor
+Para a modulação da flor utilizamos os ficheiros MyFlower.js, MyPetal.js, MyReceptacle.js, MyStem.
+No MyFlower juntamos todos os componentes, no Mypetal criamos a petala a partir de dois triangulos, no MyReceptacle criamos uma esfera e no MyStem criamos o caule que dependendo do tamanho pode ter folhas
 
 ##### Parametrização da flor
+Relativamente a parametrização da flor aceitamos argumentos como as coordenadas do pe da flor, o tamanho do caule, o tamanho do receptaculo o tamanho do raio exterior isto é o tamanho das petalas - tamanho do receptaculo, número de petalas, a 
 
 ##### Aleatoriedade e diversidade na flor
 
