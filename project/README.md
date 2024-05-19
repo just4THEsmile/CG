@@ -56,7 +56,7 @@ No MyFlower juntamos todos os componentes, no Mypetal criamos a petala a partir 
 
 Relativamente a parametrização da flor aceitamos argumentos como as coordenadas do pe da flor, o tamanho do caule, o raio do caule, o tamanho do receptaculo o tamanho do raio exterior isto é o tamanho das petalas - tamanho do receptáculo, número de petalas, a cor das petalas, do caule, das folhas e do receptáculo
 
-No MyFlower parametros como o tamanho da folha, o tamanho de cada segmento do caule, curvatura do caule,diferente rotação das petalas , a rotação da folha relativa ao eixo do caule, depois na criação do MyGarden.js introduzimos cores aleatórias e tamanhos aleatórios nos parametros de cada flor
+No MyFlower parâmetros como o tamanho da folha, o tamanho de cada segmento do caule, curvatura do caule, diferente rotação das pétalas , a rotação da folha relativa ao eixo do caule, depois na criação do MyGarden.js introduzimos cores aleatórias e tamanhos aleatórios nos parâmetros de cada flor.
 
 ![Rocha](screenshoots/project-t4g7-2.png)
 
@@ -139,8 +139,8 @@ Para estas 2 partes, foram feitos os seguintes:
 #### Tópico 6: Shaders e animação
 
 ##### Modelação da relva
-Criamos a relva a partir de triangulos em que cada segmento unitário composto por dois triangulos e com um triangulo no topo
-Para a animação atualizamos o angulo da curvatura que resulta neste resultado
+Criamos a relva a partir de triângulos em que cada segmento unitário composto por dois triângulos e com um triângulo no topo
+Para a animação, atualizamos o ângulo da curvatura que resulta neste resultado.
 ![RochaPyramid](screenshoots/project-t4g7-7.png)
 ##### Ondulação da relva
 
